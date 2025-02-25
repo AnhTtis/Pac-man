@@ -25,10 +25,12 @@ This project, part of CS14003: Introduction to Artificial Intelligence, focuses 
 ## Installation
 - Step 1: Ensure Python 3.8 or later is installed on your system.
 - Step 2: Install the required libraries using the following command:
-  pip install -r requirements.txt
+  `pip install -r requirements.txt`
 
-# Note: The `requirements.txt` file includes the following dependencies:
-pygame numpy matplotlib heapq
+# Note: 
+The `requirements.txt` file includes the following dependencies:
+
+`pygame numpy matplotlib heapq`
 
 If requirements.txt is not available, manually install them independently.
 
