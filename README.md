@@ -6,7 +6,7 @@ This project, part of CS14003: Introduction to Artificial Intelligence, focuses 
 
 ## Project Members
 
-- Trần Hữu Khang - 23127
+- Trần Hữu Khang - 23127203
 - Nguyễn Văn Minh - 23127423
 - Nguyễn Hữu Anh Trí - 23127130
 - Lê Trung Kiên - 23127075
