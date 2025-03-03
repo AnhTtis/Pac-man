@@ -18,8 +18,8 @@ PI = 3.14159265358979323846
 def draw_board():
     rows = len(boardGame)
     cols = len(boardGame[0])
-    num1 = (screen_width / cols)
-    num2 = (screen_height / rows)
+    num1 = (screen_width / cols) #width
+    num2 = (screen_height / rows) #length
     num = int(num2 / 10 + 1)
     print(num1, num2)  
     for i in range(rows):
@@ -35,18 +35,25 @@ def draw_board():
                 pygame.draw.line(screen, color, (j * num1, i * num2 + (0.5 * num2)),
                                  (j * num1 + num1, i * num2 + (0.5 * num2)), num)
             if boardGame[i][j] == 5:
-                pygame.draw.arc(screen, color, [(j * num1 - (num1 * 0.4)) - 2, (i * num2 + (0.5 * num2)), num1, num2],
-                                0, PI / 2, num)
+                pygame.draw.line(screen, color, (j * num1 + (0.5 * num1), (i + 0.5) * num2),
+                                 (j * num1 + (0.5 * num1), i * num2 + num2), num)
+                pygame.draw.line(screen, color, (j * num1, i * num2 + (0.5 * num2)),
+                                 ((j + 0.5) * num1, i * num2 + (0.5 * num2)), num)
             if boardGame[i][j] == 6:
-                pygame.draw.arc(screen, color,
-                                [(j * num1 + (num1 * 0.5)), (i * num2 + (0.5 * num2)), num1, num2], PI / 2, PI, num)
+                pygame.draw.line(screen, color, (j * num1 + (0.5 * num1), (i + 0.5) * num2),
+                                 (j * num1 + (0.5 * num1), i * num2 + num2), num)
+                pygame.draw.line(screen, color, ((j + 0.5) * num1, i * num2 + (0.5 * num2)),
+                                 ((j + 1) * num1, i * num2 + (0.5 * num2)), num)
             if boardGame[i][j] == 7:
-                pygame.draw.arc(screen, color, [(j * num1 + (num1 * 0.5)), (i * num2 - (0.4 * num2)), num1, num2], PI,
-                                3 * PI / 2, num)
+                pygame.draw.line(screen, color, (j * num1 + (0.5 * num1), i * num2),
+                                 (j * num1 + (0.5 * num1), (i + 0.5) * num2), num)
+                pygame.draw.line(screen, color, ((j + 0.5) * num1, i * num2 + (0.5 * num2)),
+                                 ((j + 1) * num1, i * num2 + (0.5 * num2)), num)
             if boardGame[i][j] == 8:
-                pygame.draw.arc(screen, color,
-                                [(j * num1 - (num1 * 0.4)) - 2, (i * num2 - (0.4 * num2)), num1, num2], 3 * PI / 2,
-                                2 * PI, num)
+                pygame.draw.line(screen, color, (j * num1 + (0.5 * num1), i * num2),
+                                 (j * num1 + (0.5 * num1), (i + 0.5) * num2), num)
+                pygame.draw.line(screen, color, (j * num1, i * num2 + (0.5 * num2)),
+                                 ((j + 0.5) * num1, i * num2 + (0.5 * num2)), num)
             if boardGame[i][j] == 9:
                 pygame.draw.line(screen, 'white', (j * num1, i * num2 + (0.5 * num2)),
                                  (j * num1 + num1, i * num2 + (0.5 * num2)), num)
