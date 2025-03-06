@@ -2,6 +2,7 @@ from maze import Maze
 from Ghost import Ghost
 from Ghost import BlueGhost
 
+#lazymingg chao cau nheeeee <3
 
 maze_grid = [
         [' ', ' ', ' ', '#', ' ', ' '],
