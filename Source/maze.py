@@ -3,8 +3,8 @@ class Maze:
         self.__grid = board
         self.__rows = len(board)
         self.__cols = len(board[0])
-        # self.__pacman_pos_x = 0
-        # self.__pacman_pos_y = 0
+        self.__pacman_pos_x = 0
+        self.__pacman_pos_y = 0
     
                 
     def get_neigh(self, pos):
@@ -40,10 +40,10 @@ class Maze:
         x, y = pos
         return self.__grid[y][x] == 'P'
     
-    # def load_pacman(self):
-    #     for y in range(self.__rows):
-    #         for x in range(self.__cols):
-    #             if self.__grid[y][x] == 'P':
-    #                 self.__pacman_pos_x = x
-    #                 self.__pacman_pos_y = y
-    #                 return
+    def load_pacman(self):
+        for y in range(self.__rows):
+            for x in range(self.__cols):
+                if self.__grid[y][x] == 'P':
+                    self.__pacman_pos_x = x
+                    self.__pacman_pos_y = y
+                    return

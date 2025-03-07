@@ -31,3 +31,4 @@ class BlueGhost(Ghost):  #level 1: BFS
                     queue.append((next_pos, path + [next_pos]))
         return None
     
+    
