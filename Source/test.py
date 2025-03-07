@@ -9,7 +9,7 @@ pygame.init()
 infoObject = pygame.display.Info()
 screen_width, screen_height = infoObject.current_w, infoObject.current_h
 screen_height = screen_height * 9 / 10
-screen_width = screen_width * 8 / 10
+screen_width = screen_width * 6 / 10
 boardGame = copy.deepcopy(boards)
 flicker = False
 color = 'blue'
