@@ -10,9 +10,6 @@ class Ghost:
         self.face_left = True
         self.color = color
         self.apperance = copy.deepcopy(ghost_appearance_matrix)
-
-    def display(self, screen):
-        pass
     
     def flip(self):
         if not self.apperance:
@@ -52,8 +49,7 @@ class Ghost:
     def move_down(self, d):
         self.y += d
         
-    def display(self, screen, HEIGHT):
-        pixel = int(HEIGHT/1000)
+    def display(self, screen, pixel):
         for row_idx, row in enumerate(self.apperance):
             for col_idx, cell in enumerate(row):
                 if cell == 1:
