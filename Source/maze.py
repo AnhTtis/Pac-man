@@ -3,8 +3,6 @@ class Maze:
         self.__grid = board
         self.__rows = len(board)
         self.__cols = len(board[0])
-        self.__pacman_pos_x = 0
-        self.__pacman_pos_y = 0
     
                 
     def get_neigh(self, pos):

@@ -1,4 +1,4 @@
-from maze import Maze
+from Maze import Maze
 from Ghost import Ghost
 import time
 from Ghost import BlueGhost
