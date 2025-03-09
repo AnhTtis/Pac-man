@@ -1,7 +1,8 @@
 from Maze import Maze
 from Ghost import Ghost
+from Maze import Maze
 import time
-from Ghost import BlueGhost
+from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
 
 #lazymingg chao cau nheeeee <3
 
@@ -15,7 +16,8 @@ maze_grid = [
 
 maze = Maze(maze_grid)
 # maze.load_pacman()
-ghost = BlueGhost(maze, (5, 2))
+# ghost = BlueGhost(maze, (3, 4))
+ghost = PinkGhost(maze, (5, 3))
 start_time = time.perf_counter()
 path = ghost.move((0, 0))
 end_time = time.perf_counter()
