@@ -1,5 +1,5 @@
 import pygame
-from ghost_appearance import ghost_appearance_matrix
+import time
 import ghost
 
 # Khởi tạo Pygame và vẽ con ma
@@ -15,15 +15,12 @@ pygame.display.set_caption("Ghost Drawing")
 # Màu sắc
 BACKGROUND_COLOR = (0, 0, 0)  # Màu nền
 BLOCK_SIZE = HEIGHT / 40    # Kích thước mỗi ô
-PIXEL_SIZE = int(BLOCK_SIZE / len(ghost_appearance_matrix[0]))
-print(PIXEL_SIZE)
 
-blue_ghost = ghost.Blue(50, 50)
-red_ghost = ghost.Red(100, 50)
-pink_ghost = ghost.Pink(150, 50)
-yellow_ghost = ghost.Yellow(200, 50)
+blue_ghost = ghost.Blue(50, 50, BLOCK_SIZE, BLOCK_SIZE)
+red_ghost = ghost.Red(100, 50, BLOCK_SIZE, BLOCK_SIZE)
+pink_ghost = ghost.Pink(150, 50, BLOCK_SIZE, BLOCK_SIZE)
+yellow_ghost = ghost.Yellow(200, 50, BLOCK_SIZE, BLOCK_SIZE)
 
-# Vòng lặp chính
 running = True
 while running:
     for event in pygame.event.get():
@@ -33,11 +30,10 @@ while running:
     # Vẽ nền
     screen.fill(BACKGROUND_COLOR)
 
-    # Vẽ con ma tại tọa độ (50, 50)
-    blue_ghost.display(screen, PIXEL_SIZE)
-    red_ghost.display(screen, PIXEL_SIZE)
-    pink_ghost.display(screen, PIXEL_SIZE)
-    yellow_ghost.display(screen, PIXEL_SIZE)
+    blue_ghost.display(screen)
+    red_ghost.display(screen)
+    pink_ghost.display(screen)
+    yellow_ghost.display(screen)
 
     # Cập nhật màn hình
     pygame.display.flip()

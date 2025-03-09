@@ -1,4 +1,4 @@
-from Maze import Maze
+from maze import Maze
 import threading
 
 class Pacman:

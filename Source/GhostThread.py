@@ -1,7 +1,7 @@
 import threading
 import time
 
-from Maze import Maze
+from maze import Maze
 from Ghost import Ghost
 
 class GhostThread(threading.Thread):

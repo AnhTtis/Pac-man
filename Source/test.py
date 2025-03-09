@@ -1,6 +1,5 @@
-from Maze import Maze
+from maze import Maze
 from Ghost import Ghost
-from Maze import Maze
 import time
 from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
 from GhostHandle import GameManager
