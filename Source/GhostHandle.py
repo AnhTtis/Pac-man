@@ -1,7 +1,7 @@
 import time
 import threading
 from Maze import Maze
-from Source.Ghost import BlueGhost, PinkGhost
+from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
 from GhostThread import GhostThread
 from Pacman import Pacman
 import copy
@@ -20,6 +20,7 @@ class GameManager:
 
     def is_running(self): return self.running.is_set()
     def get_pacman_pos(self): return self.pacman.pos
+
 
 
     def move_pacman(self, direction): self.pacman.move(direction)

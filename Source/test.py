@@ -37,7 +37,7 @@ maze_grid = [
     ]
 maze = Maze(maze_grid)
 pacman = Pacman(maze, (2, 5))
-ghosts = [BlueGhost(maze, (3, 4)), PinkGhost(maze, (5, 3))]
+ghosts = [BlueGhost(maze, (3, 4), "BlueGhost"), PinkGhost(maze, (5, 3), "PinkGhost")]
 positions = {'BlueGhost': (3, 4), 'PinkGhost': (5, 3)}
 game = GameManager(maze, (2, 5), ghosts, positions)
 print(game.get_pacman_pos())
