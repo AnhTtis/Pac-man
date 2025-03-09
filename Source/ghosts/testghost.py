@@ -16,10 +16,10 @@ pygame.display.set_caption("Ghost Drawing")
 BACKGROUND_COLOR = (0, 0, 0)  # Màu nền
 BLOCK_SIZE = HEIGHT / 40    # Kích thước mỗi ô
 
-blue_ghost = ghost.Blue((50, 50), BLOCK_SIZE, BLOCK_SIZE)
-red_ghost = ghost.Red((100, 50), BLOCK_SIZE, BLOCK_SIZE)
-pink_ghost = ghost.Pink((150, 50), BLOCK_SIZE, BLOCK_SIZE)
-yellow_ghost = ghost.Yellow((200, 50), BLOCK_SIZE, BLOCK_SIZE)
+blue_ghost = ghost.Blue([50, 50], BLOCK_SIZE, BLOCK_SIZE)
+red_ghost = ghost.Red([100, 50], BLOCK_SIZE, BLOCK_SIZE)
+pink_ghost = ghost.Pink([150, 50], BLOCK_SIZE, BLOCK_SIZE)
+yellow_ghost = ghost.Yellow([200, 50], BLOCK_SIZE, BLOCK_SIZE)
 
 running = True
 while running:
@@ -34,6 +34,8 @@ while running:
     red_ghost.display(screen)
     pink_ghost.display(screen)
     yellow_ghost.display(screen)
+    
+    blue_ghost.move(1, 0)
 
     # Cập nhật màn hình
     pygame.display.flip()
