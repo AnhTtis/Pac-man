@@ -113,7 +113,60 @@ class OrangeGhost(Ghost):  # Level 3: UCS
         elif self.maze.is_gate(next_pos):
             return 2  # Higher cost for gates
         elif self.maze.is_dot(next_pos):
-            return 1  # Regular cost for dots
+            return 1  # Prioritize for dots
         else:
-            return 1  # Default cost for other positions
+            return 1.5  # Default cost for other positions
+        
+class RedGhost(Ghost):  # Level 4: A*
+    def move(self, pacman_pos):
+        path = self.astar(pacman_pos)
+        return path[1]
+    
+    def astar(self, target):
+        # Priority queue stores tuples of (cost + heuristic, current position, path)
+        queue = [(self.get_heuristic(self.pos, target), self.pos, [self.pos])]
+        visited = set()
+        
+        while queue:
+            value, pos, path = heapq.heappop(queue)
+            old_heuristic = self.get_heuristic(pos, target)
+            print(f"Visiting: {pos}, Current cost: {value - old_heuristic}")
+            
+            # Check if the goal has been reached
+            if pos == target:
+                print(f"Goal reached! Path: {path}")
+                return path
+            
+            # Skip if the position has already been visited
+            if pos not in visited:
+                visited.add(pos)
+                
+                # Explore neighbors
+                for next_pos in self.maze.get_neigh(pos):
+                    if next_pos not in visited:
+                        # Use get_cost to calculate the cost for the next position
+                        move_cost = self.get_cost(next_pos)
+                        new_heuristic = self.get_heuristic(next_pos, target)
+                        heapq.heappush(queue, (value - old_heuristic + move_cost + new_heuristic, next_pos, path + [next_pos]))
+        
+        # Return None if no path is found
+        return None
+    
+    def get_cost(self, next_pos):
+        if self.maze.is_wall(next_pos):
+            return float('inf')  # Impassable
+        elif self.maze.is_big_dot(next_pos):
+            return 0.5  # Lower cost for big dots
+        elif self.maze.is_gate(next_pos):
+            return 2  # Higher cost for gates
+        elif self.maze.is_dot(next_pos):
+            return 1  # Prioritize for dots
+        else:
+            return 1.5  # Default cost for other positions
+        
+    def get_heuristic(self, pos, target):
+        x1, y1 = pos
+        x2, y2 = target
+        return abs(x1 - x2) + abs(y1 - y2)
+        
     
