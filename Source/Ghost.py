@@ -70,37 +70,59 @@ class PinkGhost(Ghost):  #level 2: DFS
                     stack.append((next_pos, path + [next_pos]))
 
         return None
-    
-    
-class OrangeGhost(Ghost):  # Level 3: UCS
+
+
+class OrangeGhost(Ghost): # Level 3: UCS
     def move(self, pacman_pos):
         path = self.ucs(pacman_pos)
         return path
     
     def ucs(self, target):
-        # Priority queue stores tuples of (cost, current position, path)
-        queue = [(0, self.pos, [self.pos])]
-        visited = set()
+        # Initialize the root node and cost
+        root = self.pos
+        cost = 0
         
-        while queue:
-            cost, pos, path = heapq.heappop(queue)
-            print(f"Visiting: {pos}, Current cost: {cost}")
+        # Initialize the priority queue with the root node
+        frontier = [(cost, root, [root])]
+        heapq.heapify(frontier)
+        
+        # Initialize the explored set as empty
+        explored = set()
+        
+        while frontier:
+            # Pop the node with the lowest cost from the frontier
+            cost, node, path = heapq.heappop(frontier)
+            print(f"Visiting: {node}, Current cost: {cost}")
             
-            # Check if the goal has been reached
-            if pos == target:
+            # If the node is the goal, return the solution
+            if node == target:
                 print(f"Goal reached! Path: {path}")
                 return path
             
-            # Skip if the position has already been visited
-            if pos not in visited:
-                visited.add(pos)
-                
-                # Explore neighbors
-                for next_pos in self.maze.get_neigh(pos):
-                    if next_pos not in visited:
-                        # Use get_cost to calculate the cost for the next position
-                        move_cost = self.get_cost(next_pos)
-                        heapq.heappush(queue, (cost + move_cost, next_pos, path + [next_pos]))
+            # Add the node to the explored set
+            explored.add(node)
+            
+            # For each neighbor of the node
+            for neighbor in self.maze.get_neigh(node):
+                if neighbor not in explored:
+                    # Calculate the cost to move to the neighbor
+                    move_cost = self.get_cost(neighbor)
+                    total_cost = cost + move_cost
+                    
+                    # Check if the neighbor is in the frontier with a higher cost
+                    in_frontier = False
+                    for i, (f_cost, f_node, f_path) in enumerate(frontier):
+                        if f_node == neighbor:
+                            in_frontier = True
+                            if total_cost < f_cost:
+                                # Replace the existing node with the neighbor
+                                frontier[i] = (total_cost, neighbor, path + [neighbor])
+                                heapq.heapify(frontier)
+                            break
+                    
+                    # If the neighbor is not in the frontier, add it to the frontier
+                    if not in_frontier:
+                        heapq.heappush(frontier, (total_cost, neighbor, path + [neighbor]))
         
         # Return None if no path is found
         return None
