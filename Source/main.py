@@ -59,9 +59,26 @@ maze_grid = [
 # print(game.get_pacman_pos())
 
 maze = Maze(maze_grid)
+#test blue ghost
 pacman = Pacman(maze, (3, 3))
 ghosts = [BlueGhost(maze, (1, 2), "BlueGhost")]
 positions = {"BlueGhost": (1, 2)}
+#test orange ghost
+# pacman = Pacman(maze, (3, 3))
+# ghosts = [OrangeGhost(maze, (1, 2), "OrangeGhost")]
+# positions = {"OrangeGhost": (1, 2)}
+#test pink ghost
+# pacman = Pacman(maze, (3, 3))
+# ghosts = [PinkGhost(maze, (1, 2), "PinkGhost")]
+# positions = {"PinkGhost": (1, 2)}
+#test red ghost
+# pacman = Pacman(maze, (3, 3))
+# ghosts = [RedGhost(maze, (1, 2), "RedGhost")]
+# positions = {"RedGhost": (1, 2)}
 game = GameManager(maze, pacman, ghosts, positions)
 game.start()
 
+
+while game.is_running():
+    time.sleep(1)
+game.stop()
