@@ -2,7 +2,7 @@ import threading
 import time
 
 from maze import Maze
-from Ghost import Ghost
+from ghosts.ghost import Ghost
 
 class GhostThread(threading.Thread):
     def __init__(self, ghost, pacman, lock, running, position):

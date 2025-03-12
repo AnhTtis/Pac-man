@@ -23,7 +23,7 @@ class Pacman:
         elif self.maze.is_big_dot(self.pos):
             self.score += 5
         return self.pos
-    
+
     def __str__(self):
         return f"Pacman: x={self.x}, y={self.y}, score={self.score}"
     
