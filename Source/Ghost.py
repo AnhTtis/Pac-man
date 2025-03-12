@@ -1,29 +1,66 @@
 from collections import deque
+from typing import List, Tuple, Dict, Set, Optional
 import heapq
+from Maze import Maze
 
 class Ghost:
-    def __init__(self, maze, start_pos, name):
+    """Base class for Pac-Man ghost AI behaviors."""
+    def __init__(self, maze: 'Maze', start_pos: Tuple[int, int], name: str):
+        """
+        Initialize a ghost with its maze, starting position, and name.
+
+        Args:
+            maze: The maze object containing the game grid and utility methods
+            start_pos: Tuple of (x, y) coordinates for the ghost's starting position
+            name: Name of the ghost (e.g., "Blinky", "Pinky")
+        """
         self.maze = maze
         self.pos = start_pos
         self.name = name
 
-    def move(self, pacman_pos):
+    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        """
+        Calculate the next position for the ghost to move towards Pac-Man.
+
+        Args:
+            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's current position
+
+        Returns:
+            Tuple of (x, y) coordinates for the next move, or None if no move possible
+        """
         raise NotImplementedError("This method should be implemented by a subclass")
 
-class BlueGhost(Ghost):  # level 1: BFS
-    def move(self, pacman_pos):
+class BlueGhost(Ghost):
+    """Ghost that uses Breadth-First Search to chase Pac-Man."""
+    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        """
+        Move the ghost towards Pac-Man using BFS.
+
+        Args:
+            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's position
+
+        Returns:
+            Next position as (x, y) tuple, or None if no path exists
+        """
         path = self.bfs(pacman_pos)
         if path and len(path) > 1:
             return path[1]
+        return None
 
-    def bfs(self, target):
-        # tuple of (current position, path python list[])
-        queue = deque([(self.pos, [self.pos])])
-        visited = set([self.pos])
+    def bfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
+        """
+        Perform Breadth-First Search to find a path to the target.
+
+        Args:
+            target: Tuple of (x, y) coordinates to reach (Pac-Man's position)
+
+        Returns:
+            List of (x, y) tuples representing the path, or None if no path found
+        """
+        queue: deque[Tuple[Tuple[int, int], List[Tuple[int, int]]]] = deque([(self.pos, [self.pos])])
+        visited: Set[Tuple[int, int]] = set([self.pos])
         while queue:
             pos, path = queue.popleft()
-            # print(pos)
-            # is goal?
             if pos == target:
                 return path
             
@@ -31,26 +68,41 @@ class BlueGhost(Ghost):  # level 1: BFS
             for next_pos in neighbors:
                 if next_pos not in visited:
                     visited.add(next_pos)
-                    # adding update the path
                     queue.append((next_pos, path + [next_pos]))
         return None
 
-class PinkGhost(Ghost):  # level 2: DFS
-    def move(self, pacman_pos):
+class PinkGhost(Ghost):
+    """Ghost that uses Depth-First Search to chase Pac-Man."""
+    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        """
+        Move the ghost towards Pac-Man using DFS.
+
+        Args:
+            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's position
+
+        Returns:
+            Next position as (x, y) tuple, or None if no path exists
+        """
         path = self.dfs(pacman_pos)
         if path and len(path) > 1:
             return path[1]
+        return None
 
-    def dfs(self, target):
-        # tuple of (current position, path python list[])
-        stack = [(self.pos, [self.pos])]
-        visited = set([self.pos])
+    def dfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
+        """
+        Perform Depth-First Search to find a path to the target.
+
+        Args:
+            target: Tuple of (x, y) coordinates to reach (Pac-Man's position)
+
+        Returns:
+            List of (x, y) tuples representing the path, or None if no path found
+        """
+        stack: List[Tuple[Tuple[int, int], List[Tuple[int, int]]]] = [(self.pos, [self.pos])]
+        visited: Set[Tuple[int, int]] = set([self.pos])
         
         while stack:
             pos, path = stack.pop()
-            # print(pos)
-            
-            # is goal?
             if pos == target:
                 return path
             
@@ -58,68 +110,76 @@ class PinkGhost(Ghost):  # level 2: DFS
             for next_pos in neighbors:
                 if next_pos not in visited:
                     visited.add(next_pos)
-                    # adding update the path
                     stack.append((next_pos, path + [next_pos]))
-
         return None
 
-class OrangeGhost(Ghost): # Level 3: UCS
-    def move(self, pacman_pos):
+class OrangeGhost(Ghost):
+    """Ghost that uses Uniform Cost Search to chase Pac-Man."""
+    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        """
+        Move the ghost towards Pac-Man using UCS.
+
+        Args:
+            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's position
+
+        Returns:
+            Next position as (x, y) tuple, or None if no path exists
+        """
         path = self.ucs(pacman_pos)
         if path and len(path) > 1:
             return path[1]
+        return None
 
-    def ucs(self, target):
-        # Initialize the root node and cost
+    def ucs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
+        """
+        Perform Uniform Cost Search to find a path to the target.
+
+        Args:
+            target: Tuple of (x, y) coordinates to reach (Pac-Man's position)
+
+        Returns:
+            List of (x, y) tuples representing the path, or None if no path found
+        """
         root = self.pos
         cost = 0
-        
-        # Initialize the priority queue with the root node
-        frontier = [(cost, root, [root])]
+        frontier: List[Tuple[float, Tuple[int, int], List[Tuple[int, int]]]] = [(cost, root, [root])]
         heapq.heapify(frontier)
-        
-        # Initialize the explored set as empty
-        explored = set()
+        explored: Set[Tuple[int, int]] = set()
         
         while frontier:
-            # Pop the node with the lowest cost from the frontier
             cost, node, path = heapq.heappop(frontier)
-          #print(f"Visiting: {node}, Current cost: {cost}")
-            
-            # If the node is the goal, return the solution
             if node == target:
-               # print(f"Goal reached! Path: {path}")
                 return path
             
-            # Add the node to the explored set
             explored.add(node)
-            
-            # For each neighbor of the node
             for neighbor in self.maze.get_neigh(node):
                 if neighbor not in explored:
-                    # Calculate the cost to move to the neighbor
                     move_cost = self.get_cost(neighbor)
                     total_cost = cost + move_cost
                     
-                    # Check if the neighbor is in the frontier with a higher cost
                     in_frontier = False
                     for i, (f_cost, f_node, f_path) in enumerate(frontier):
                         if f_node == neighbor:
                             in_frontier = True
                             if total_cost < f_cost:
-                                # Replace the existing node with the neighbor
                                 frontier[i] = (total_cost, neighbor, path + [neighbor])
                                 heapq.heapify(frontier)
                             break
                     
-                    # If the neighbor is not in the frontier, add it to the frontier
                     if not in_frontier:
                         heapq.heappush(frontier, (total_cost, neighbor, path + [neighbor]))
-        
-        # Return None if no path is found
         return None
     
-    def get_cost(self, next_pos):
+    def get_cost(self, next_pos: Tuple[int, int]) -> float:
+        """
+        Calculate the cost of moving to a position based on maze features.
+
+        Args:
+            next_pos: Tuple of (x, y) coordinates to evaluate
+
+        Returns:
+            Float representing the movement cost (inf for walls)
+        """
         if self.maze.is_wall(next_pos):
             return float('inf')  # Impassable
         elif self.maze.is_big_dot(next_pos):
@@ -131,64 +191,83 @@ class OrangeGhost(Ghost): # Level 3: UCS
         else:
             return 1  # Default cost for other positions
 
+class RedGhost(Ghost):
+    """Ghost that uses A* Search to chase Pac-Man."""
+    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        """
+        Move the ghost towards Pac-Man using A* search.
 
-class RedGhost(Ghost): # Level 4: A* search
-    def move(self, pacman_pos):
+        Args:
+            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's position
+
+        Returns:
+            Next position as (x, y) tuple, or None if no path exists
+        """
         path = self.a_star(pacman_pos)
         if path and len(path) > 1:
             return path[1]
+        return None
 
-    def a_star(self, target):
+    def a_star(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
+        """
+        Perform A* Search to find an optimal path to the target.
+
+        Args:
+            target: Tuple of (x, y) coordinates to reach (Pac-Man's position)
+
+        Returns:
+            List of (x, y) tuples representing the path, or None if no path found
+        """
         start = self.pos
-        
-        # The set of discovered nodes that may need to be (re-)expanded.
-        openSet = [(self.get_heuristic(start, target), start)]
+        openSet: List[Tuple[float, Tuple[int, int]]] = [(self.get_heuristic(start, target), start)]
         heapq.heapify(openSet)
-        
-        # For node n, cameFrom[n] is the node immediately preceding it on the cheapest path from the start to n currently known.
-        cameFrom = {}
-        
-        # For node n, gScore[n] is the currently known cost of the cheapest path from start to n.
-        gScore = {start: 0}
-        
-        # For node n, fScore[n] := gScore[n] + h(n). fScore[n] represents our current best guess as to how cheap a path could be from start to finish if it goes through n.
-        fScore = {start: self.get_heuristic(start, target)}
+        cameFrom: Dict[Tuple[int, int], Tuple[int, int]] = {}
+        gScore: Dict[Tuple[int, int], float] = {start: 0}
+        fScore: Dict[Tuple[int, int], float] = {start: self.get_heuristic(start, target)}
         
         while openSet:
-            # This operation can occur in O(Log(N)) time if openSet is a min-heap or a priority queue
             current_f, current = heapq.heappop(openSet)
-            
-            # If the current node is the goal, reconstruct and return the path
             if current == target:
                 return self.reconstruct_path(cameFrom, current)
             
-            # Explore neighbors
             for neighbor in self.maze.get_neigh(current):
-                # d(current, neighbor) is the weight of the edge from current to neighbor
-                # tentative_gScore is the distance from start to the neighbor through current
                 tentative_gScore = gScore[current] + self.get_cost(neighbor)
-                
                 if neighbor not in gScore or tentative_gScore < gScore[neighbor]:
-                    # This path to neighbor is better than any previous one. Record it!
                     cameFrom[neighbor] = current
                     gScore[neighbor] = tentative_gScore
                     fScore[neighbor] = tentative_gScore + self.get_heuristic(neighbor, target)
-                    
-                    # If neighbor is not in openSet, add it
                     if neighbor not in [n for _, n in openSet]:
                         heapq.heappush(openSet, (fScore[neighbor], neighbor))
-        
-        # Open set is empty but goal was never reached
         return None
     
-    def reconstruct_path(self, cameFrom, current):
+    def reconstruct_path(self, cameFrom: Dict[Tuple[int, int], Tuple[int, int]], 
+                        current: Tuple[int, int]) -> List[Tuple[int, int]]:
+        """
+        Reconstruct the path from the start to the target using the cameFrom map.
+
+        Args:
+            cameFrom: Dictionary mapping each node to its predecessor
+            current: The target node to start reconstruction from
+
+        Returns:
+            List of (x, y) tuples representing the full path
+        """
         total_path = [current]
         while current in cameFrom:
             current = cameFrom[current]
             total_path.insert(0, current)
         return total_path
     
-    def get_cost(self, next_pos):
+    def get_cost(self, next_pos: Tuple[int, int]) -> float:
+        """
+        Calculate the cost of moving to a position based on maze features.
+
+        Args:
+            next_pos: Tuple of (x, y) coordinates to evaluate
+
+        Returns:
+            Float representing the movement cost (inf for walls)
+        """
         if self.maze.is_wall(next_pos):
             return float('inf')  # Impassable
         elif self.maze.is_big_dot(next_pos):
@@ -200,7 +279,17 @@ class RedGhost(Ghost): # Level 4: A* search
         else:
             return 1  # Default cost for other positions
         
-    def get_heuristic(self, pos, target):
+    def get_heuristic(self, pos: Tuple[int, int], target: Tuple[int, int]) -> float:
+        """
+        Calculate the Manhattan distance heuristic between two positions.
+
+        Args:
+            pos: Current position as (x, y) tuple
+            target: Target position as (x, y) tuple
+
+        Returns:
+            Float representing the estimated cost to reach the target
+        """
         x1, y1 = pos
         x2, y2 = target
         return abs(x1 - x2) + abs(y1 - y2)  # Manhattan distance
