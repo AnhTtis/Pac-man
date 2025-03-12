@@ -1,6 +1,6 @@
 import time
 import threading
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional, Callable
 import copy
 from Maze import Maze 
 from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
@@ -21,19 +21,16 @@ class GameManager:
             positions: Dictionary mapping ghost names to their current positions
         """
         self.maze: Maze = copy.deepcopy(maze)
-        self.pacman: Pacman = copy.deepcopy(pacman)
+        self.pacman: Pacman = pacman
         self.ghosts: List[Ghost] = copy.deepcopy(ghosts)
-        self.positions: Dict[str, Tuple[int, int]] = positions
+        self.positions: Dict[str, Tuple[int, int]] = copy.deepcopy(positions)
     
         # Initialize ghost threads
         self.lock: threading.Lock = threading.Lock()
         self.running: threading.Event = threading.Event()
         self.running.set()
-        self.threads: List[GhostThread] = [
-            GhostThread(ghost, self.pacman, self.lock, self.running, self.positions) 
-            for ghost in ghosts
-        ]
-
+        self.on_catch: Optional[Callable[[str, Tuple[int, int]], None]] = None
+        self.threads: List[GhostThread] = [GhostThread(ghost, self.pacman, self.lock, self.running, self.positions, self.on_catch) for ghost in ghosts]
 
 
     def is_running(self) -> bool:
