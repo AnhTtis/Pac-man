@@ -2,7 +2,7 @@ from Maze import Maze
 from Ghost import Ghost
 import time
 from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
-from GhostHandle import GameManager
+from Source.GameManager import GameManager
 from Pacman import Pacman
 import copy
 import threading
