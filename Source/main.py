@@ -1,15 +1,15 @@
 from Maze import Maze
-from Ghost import Ghost
-import time
 from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
-from Source.GameManager import GameManager
+from GameManager import GameManager
 from Pacman import Pacman
+
 import copy
 import threading
+import time
 
 
 maze_grid = [
-        ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
+['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
 ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
 ['#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#'],
 ['#', '#', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
@@ -43,8 +43,8 @@ maze_grid = [
     ]
 maze = Maze(maze_grid)
 # Add pacman and all ghosts to the game, ghosts have name and position
-ghosts = [BlueGhost(maze, (14, 1), "BlueGhost"), PinkGhost(maze, (1, 1), "PinkGhost"), RedGhost(maze, (1, 27), "RedGhost")]
+ghosts = [BlueGhost(maze, (14, 1), "BlueGhost")]
 #positions = {'BlueGhost': (3, 4), 'PinkGhost': (5, 3)}
-positions = {'BlueGhost': (3, 4), 'PinkGhost': (5, 3), 'RedGhost': (5, 3)}
+positions = {"BlueGhost": (14, 1)}
 game = GameManager(maze, (14, 24), ghosts, positions)
 print(game.get_pacman_pos())
