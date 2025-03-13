@@ -1,7 +1,7 @@
 from collections import deque
 from typing import List, Tuple, Dict, Set, Optional
 import heapq
-from Maze import Maze
+from maze import Maze
 
 class Ghost:
     """Base class for Pac-Man ghost AI behaviors."""

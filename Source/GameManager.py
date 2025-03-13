@@ -2,7 +2,7 @@ import time
 import threading
 from typing import List, Tuple, Dict, Optional, Callable
 import copy
-from Maze import Maze 
+from maze import Maze 
 from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
 from GhostThread import GhostThread 
 from Pacman import Pacman

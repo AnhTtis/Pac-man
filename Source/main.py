@@ -1,4 +1,4 @@
-from Maze import Maze
+from maze import Maze
 from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
 from GameManager import GameManager
 from Pacman import Pacman

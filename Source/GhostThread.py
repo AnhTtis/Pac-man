@@ -2,7 +2,7 @@ import threading
 import time
 from typing import Dict, Tuple, Optional, Callable
 
-from Maze import Maze
+from maze import Maze
 from Ghost import Ghost
 from Pacman import Pacman
 
