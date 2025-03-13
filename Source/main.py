@@ -80,5 +80,6 @@ game.start()
 
 
 while game.is_running():
-    time.sleep(1)
+    time.sleep(1) # thêm logic đồ họahọa
+
 game.stop()
