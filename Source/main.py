@@ -76,7 +76,7 @@ else:
 # Set the figures of the game
 maze = Maze(maze_grid)
 pacman = Pacman(maze, (14, 24), cell_size, cell_size)  # Vị trí ban đầu của Pac-Man
-ghosts = [BlueGhost(maze, (1, 2), "BlueGhost", cell_size, cell_size), PinkGhost(maze, (1, 3), "PinkGhost", cell_size, cell_size)]  # BlueGhost bắt đầu tại (1, 2)
+ghosts = [BlueGhost(maze, (1, 2), "BlueGhost", (cell_size, cell_size)), PinkGhost(maze, (1, 3), "PinkGhost", (cell_size, cell_size))]  # BlueGhost bắt đầu tại (1, 2)
 positions = {"BlueGhost": (1, 2), "PinkGhost": (1, 3)}
 game = GameManager(maze, pacman, ghosts, positions, cell_size)
 pacman_closed = False

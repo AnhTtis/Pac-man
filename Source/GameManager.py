@@ -59,7 +59,7 @@ class GameManager:
         #draw the ghosts 
         for ghost in self.ghosts:
             ghost.set_pos(self.positions[ghost.name])
-            ghost.display(screen, self.cell_size)
+            ghost.display(screen)
             
         # draw pac-man
         self.pacman.display(screen, self.cell_size)        
