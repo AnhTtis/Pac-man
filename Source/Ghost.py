@@ -5,7 +5,7 @@ from maze import Maze
 
 class Ghost:
     """Base class for Pac-Man ghost AI behaviors."""
-    def __init__(self, maze: 'Maze', start_pos: Tuple[int, int], name: str, width: int, height:int):
+    def __init__(self, maze: 'Maze', start_pos: Tuple[int, int], name: str, size:int):
         """
         Initialize a ghost with its maze, starting position, and name.
 
@@ -17,10 +17,8 @@ class Ghost:
         self.maze = maze
         self.pos = start_pos
         self.name = name
-        self.width = width
-        self.height = height
-        self.face_left = True
-        self.moving = False
+        self.size = size
+        self.face_right = False
         self.appearance = None
         self.path: List[Tuple[int, int]] = []
         
@@ -40,11 +38,10 @@ class Ghost:
         """
         raise NotImplementedError("This method should be implemented by a subclass")
     
-    def display(self, screen, cell_size):
-        print(self.pos)
+    def display(self, screen):
         if self.appearance:
-            screen.blit(self.appearance[self.face_left][self.moving], (self.pos[0] * cell_size, self.pos[1]* cell_size))
-            
+            screen.blit(self.appearance[self.face_right], (self.pos[0] * self.size[0], self.pos[1] * self.size[1]))
+
     def set_pos(self, pos: Tuple[int, int]) -> None:
         """
         Set the ghost's position to a new (x, y) coordinate.
@@ -62,10 +59,8 @@ class BlueGhost(Ghost):
         return None
     
     def load_image(self, pygame):
-        self.appearance = [
-            [pygame.transform.scale(pygame.image.load("Source/ghosts/blue1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/blue2_flip.png"), (self.width, self.height))],
-            [pygame.transform.scale(pygame.image.load("Source/ghosts/blue1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/blue2.png"), (self.width, self.height))]
-        ]
+        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/blue.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
     
 
     def bfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -100,10 +95,8 @@ class PinkGhost(Ghost):
         return None
     
     def load_image(self, pygame):
-        self.appearance = [
-            [pygame.transform.scale(pygame.image.load("Source/ghosts/pink1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/pink2_flip.png"), (self.width, self.height))],
-            [pygame.transform.scale(pygame.image.load("Source/ghosts/pink1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/pink2.png"), (self.width, self.height))]
-        ]
+        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/pink.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
 
     def dfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -138,10 +131,8 @@ class OrangeGhost(Ghost):
         return None
     
     def load_image(self, pygame):
-        self.appearance = [
-            [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/yellow2_flip.png"), (self.width, self.height))],
-            [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/yellow2.png"), (self.width, self.height))]
-        ]    
+        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
 
     def ucs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -212,11 +203,9 @@ class RedGhost(Ghost):
         return None
 
     def load_image(self, pygame):
-        self.appearance = [
-            [pygame.transform.scale(pygame.image.load("Source/ghosts/red1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/red2_flip.png"), (self.width, self.height))],
-            [pygame.transform.scale(pygame.image.load("Source/ghosts/red1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/red2.png"), (self.width, self.height))]
-        ]
-
+        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/red.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
+    
     def a_star(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
         Perform A* Search to find an optimal path to the target.

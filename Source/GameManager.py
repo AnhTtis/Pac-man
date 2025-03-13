@@ -12,7 +12,7 @@ class GameManager:
     def __init__(self, maze: Maze, pacman: 'Pacman', 
                  ghosts: List[Ghost], positions: Dict[str, Tuple[int, int]], cell_size: int):
         self.load_images = False
-        self.maze = copy.deepcopy(maze)
+        self.maze = maze
         self.pacman = pacman  # Không deepcopy để tránh lỗi Lock
         self.ghosts = copy.deepcopy(ghosts)
         self.positions = positions
@@ -59,7 +59,7 @@ class GameManager:
         #draw the ghosts 
         for ghost in self.ghosts:
             ghost.set_pos(self.positions[ghost.name])
-            ghost.display(screen, self.cell_size)
+            ghost.display(screen)
             
         # draw pac-man
         self.pacman.display(screen, self.cell_size)        
