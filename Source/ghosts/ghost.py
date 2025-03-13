@@ -14,19 +14,10 @@ class Ghost:
         self.appearance = None
     
     def loadImange(self):
-        return NotImplementedError("This method should be implemented by a subclass")
-
-    def moveScreen(self, dx, dy):
-        if dx != 0:
-            self.pos[0] += dx
-            if dx > 0 and self.face_left:
-                self.face_left = False
-            elif dx < 0 and not self.face_left:
-                self.face_left = True
-        self.pos[1] += dy
-        self.moving = not self.moving
+        pass
 
     def display(self, screen):
+        print(self.pos)
         if self.appearance:
             screen.blit(self.appearance[self.face_left][self.moving], (self.pos[0], self.pos[1]))
 
@@ -35,17 +26,17 @@ class Ghost:
     
   
 class BlueGhost(Ghost):  # level 1: BFS
-    def loadImage(self):
-        super().__init__(self.pos, self.width, self.height, (0, 0, 255))
+    def load_image(self, pygame):
         self.appearance = [
-            [pygame.transform.scale(pygame.image.load("blue1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("blue2_flip.png"), (self.width, self.height))],
-            [pygame.transform.scale(pygame.image.load("blue1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("blue2.png"), (self.width, self.height))]
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/blue1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/blue2_flip.png"), (self.width, self.height))],
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/blue1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/blue2.png"), (self.width, self.height))]
         ]
 
     def move(self, pacman_pos):
         path = self.bfs(pacman_pos)
         if path and len(path) > 1:
-            self.moveScreen(path[1][0] - self.pos[0], path[1][1] - self.pos[1])
+            self.pos = path[1]
+            return path[1]
 
 
     def bfs(self, target):
@@ -68,17 +59,17 @@ class BlueGhost(Ghost):  # level 1: BFS
         return None
 
 class PinkGhost(Ghost):  # level 2: DFS
-    def loadImange(self):
-        super().__init__(self.pos, self.width, self.height, (255, 105, 180))
+    def load_image(self, pygame):
         self.appearance = [
-            [pygame.transform.scale(pygame.image.load("pink1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("pink2_flip.png"), (self.width, self.height))],
-            [pygame.transform.scale(pygame.image.load("pink1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("pink2.png"), (self.width, self.height))]
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/pink1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/pink2_flip.png"), (self.width, self.height))],
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/pink1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/pink2.png"), (self.width, self.height))]
         ]
 
     def move(self, pacman_pos):
         path = self.dfs(pacman_pos)
         if path and len(path) > 1:
-            self.moveScreen(path[1][0] - self.pos[0], path[1][1] - self.pos[1])
+            self.pos = path[1]
+            return path[1]
 
     def dfs(self, target):
         # tuple of (current position, path python list[])
@@ -103,17 +94,17 @@ class PinkGhost(Ghost):  # level 2: DFS
         return None
 
 class OrangeGhost(Ghost): # Level 3: UCS
-    def loadImange(self):
-        super().__init__(self.pos, self.width, self.height, (255, 255, 0))
+    def load_image(self, pygame):
         self.appearance = [
-            [pygame.transform.scale(pygame.image.load("yellow1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("yellow2_flip.png"), (self.width, self.height))],
-            [pygame.transform.scale(pygame.image.load("yellow1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("yellow2.png"), (self.width, self.height))]
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/yellow2_flip.png"), (self.width, self.height))],
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/yellow2.png"), (self.width, self.height))]
         ]
 
     def move(self, pacman_pos):
         path = self.ucs(pacman_pos)
         if path and len(path) > 1:
-            self.moveScreen(path[1][0] - self.pos[0], path[1][1] - self.pos[1])
+            self.pos = path[1]
+            return path[1]
 
     def ucs(self, target):
         # Initialize the root node and cost
@@ -179,17 +170,17 @@ class OrangeGhost(Ghost): # Level 3: UCS
 
 
 class RedGhost(Ghost): # Level 4: A* search
-    def loadImange(self):
-        super().__init__(self.pos, self.width, self.height, (255, 0, 0))
+    def load_image(self, pygame):
         self.appearance = [
-            [pygame.transform.scale(pygame.image.load("red1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("red2_flip.png"), (self.width, self.height))],
-            [pygame.transform.scale(pygame.image.load("red1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("red2.png"), (self.width, self.height))]
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/red1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/red2_flip.png"), (self.width, self.height))],
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/red1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/red2.png"), (self.width, self.height))]
         ]
 
     def move(self, pacman_pos):
         path = self.a_star(pacman_pos)
         if path and len(path) > 1:
-            self.moveScreen(path[1][0] - self.pos[0], path[1][1] - self.pos[1])
+            self.pos = path[1]
+            return path[1]
 
     def a_star(self, target):
         start = self.pos

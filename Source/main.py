@@ -71,7 +71,7 @@ maze = Maze(maze_grid)
 # Adjust the ghost again
 ghosts = [BlueGhost(maze, (14, 1), "BlueGhost", cell_size, cell_size), PinkGhost(maze, (1, 1),"PinkGhost", cell_size, cell_size), RedGhost(maze, (1, 27), "RedGhost", cell_size, cell_size)]
 # ghosts = [BlueGhost(maze, (14, 1), "BlueGhost"), PinkGhost(maze, (1, 1), "PinkGhost"), RedGhost(maze, (1, 27), "RedGhost")]
-positions = {'BlueGhost': (3, 4), 'PinkGhost': (5, 3), 'RedGhost': (5, 3)}
+positions = {'BlueGhost': (14, 1), 'PinkGhost': (1, 1), 'RedGhost': (1, 27)}
 game = GameManager(maze, (14, 24), ghosts, positions, cell_size)
 
 # create the screen

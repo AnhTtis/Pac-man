@@ -25,6 +25,9 @@ class Maze:
     
     def get_grid(self, rows, cols):
         return self.__grid[rows][cols]
+    
+    def set_grid(self, rows, cols, value):
+        self.__grid[rows][cols] = value
 
     def is_wall(self, pos):
         x, y = pos

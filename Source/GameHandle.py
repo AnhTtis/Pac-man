@@ -42,6 +42,13 @@ class GameManager:
                     pygame.draw.rect(screen, (255, 255, 255), (x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size))
                 elif self.maze.is_pacman(pos):
                     pygame.draw.circle(screen, (255, 255, 0), (int(x * self.cell_size + self.cell_size / 2), int(y * self.cell_size + self.cell_size / 2)), 10)
+        
+        #draw the ghosts
+        for ghost in self.ghosts:
+            print(ghost)
+            ghost.load_image(pygame)
+            ghost.display(screen)
+        
 
     def move_pacman(self, direction): self.pacman.move(direction)
     def stop(self):
