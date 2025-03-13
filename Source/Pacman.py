@@ -15,16 +15,19 @@ class Pacman:
         
     def set_direction(self, direction):
         self.direction = direction
-        print(self.direction)
 
     def move(self):
         if self.direction == "up" and not self.maze.is_wall((self.pos[0], self.pos[1] - 1)):
+            self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0], self.pos[1] - 1)
         elif self.direction == "down" and not self.maze.is_wall((self.pos[0], self.pos[1] + 1)):
+            self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0], self.pos[1] + 1)
         elif self.direction == "left" and not self.maze.is_wall((self.pos[0] - 1, self.pos[1])):
+            self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0] - 1, self.pos[1])
         elif self.direction == "right" and not self.maze.is_wall((self.pos[0] + 1, self.pos[1])):
+            self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0] + 1, self.pos[1])
         if self.maze.is_dot(self.pos):
             self.score += 1

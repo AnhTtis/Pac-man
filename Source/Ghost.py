@@ -41,7 +41,6 @@ class Ghost:
         raise NotImplementedError("This method should be implemented by a subclass")
     
     def display(self, screen, cell_size):
-        print(self.pos)
         if self.appearance:
             screen.blit(self.appearance[self.face_left][self.moving], (self.pos[0] * cell_size, self.pos[1]* cell_size))
             
