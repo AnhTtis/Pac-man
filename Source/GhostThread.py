@@ -2,7 +2,7 @@ import threading
 import time
 from typing import Dict, Tuple, Optional, Callable
 
-from Maze import Maze
+from maze import Maze
 from Ghost import Ghost
 from Pacman import Pacman
 
@@ -29,7 +29,7 @@ class GhostThread(threading.Thread):
         #         current_pacman_pos = self.pacman.pos
         #         if last_pacman_pos != current_pacman_pos: 
                 self.ghost.find_path(self.pacman.pos)
-                print(self.ghost.path)
+                #print(self.ghost.path)
             time.sleep(0.2)
             #         last_pacman_pos = current_pacman_pos
 
@@ -40,12 +40,12 @@ class GhostThread(threading.Thread):
                     next_pos = self.ghost.path[1]
 
                     if next_pos not in self.positions.values():
-                        self.ghost.pos = next_pos
+                        self.ghost.set_pos(next_pos)
                         self.ghost.path.pop(0)
                         self.positions[self.ghost.name] = self.ghost.pos
-                        print(f"{self.ghost.name} moved to {self.ghost.pos}")
+                        #print(f"{self.ghost.name} moved to {self.ghost.pos}")
                         if self.ghost.pos == self.pacman.pos:
-                            print(f"{self.ghost.name} caught Pac-Man at {self.ghost.pos}!")
+                           # print(f"{self.ghost.name} caught Pac-Man at {self.ghost.pos}!")
                             if self.on_catch:
                                 self.on_catch(self.ghost.name, self.ghost.pos)
                             self.running.clear()

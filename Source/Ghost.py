@@ -1,11 +1,11 @@
 from collections import deque
 from typing import List, Tuple, Dict, Set, Optional
 import heapq
-from Maze import Maze
+from maze import Maze
 
 class Ghost:
     """Base class for Pac-Man ghost AI behaviors."""
-    def __init__(self, maze: 'Maze', start_pos: Tuple[int, int], name: str):
+    def __init__(self, maze: 'Maze', start_pos: Tuple[int, int], name: str, width: int, height:int):
         """
         Initialize a ghost with its maze, starting position, and name.
 
@@ -17,7 +17,16 @@ class Ghost:
         self.maze = maze
         self.pos = start_pos
         self.name = name
+        self.width = width
+        self.height = height
+        self.face_left = True
+        self.moving = False
+        self.appearance = None
         self.path: List[Tuple[int, int]] = []
+        
+    def load_image(self, pygame):
+        # load the image of the ghost
+        pass
 
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
@@ -30,13 +39,34 @@ class Ghost:
             Tuple of (x, y) coordinates for the next move, or None if no move possible
         """
         raise NotImplementedError("This method should be implemented by a subclass")
+    
+    def display(self, screen, cell_size):
+        print(self.pos)
+        if self.appearance:
+            screen.blit(self.appearance[self.face_left][self.moving], (self.pos[0] * cell_size, self.pos[1]* cell_size))
+            
+    def set_pos(self, pos: Tuple[int, int]) -> None:
+        """
+        Set the ghost's position to a new (x, y) coordinate.
 
+        Args:
+            pos: Tuple of (x, y) coordinates for the new position
+        """
+        self.pos = pos
+        
 class BlueGhost(Ghost):
     """Ghost that uses Breadth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
             self.path = self.bfs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/blue1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/blue2_flip.png"), (self.width, self.height))],
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/blue1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/blue2.png"), (self.width, self.height))]
+        ]
+    
 
     def bfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -68,6 +98,12 @@ class PinkGhost(Ghost):
         if not self.path or self.path[-1] != pacman_pos:
             self.path = self.dfs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/pink1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/pink2_flip.png"), (self.width, self.height))],
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/pink1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/pink2.png"), (self.width, self.height))]
+        ]
 
     def dfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -100,6 +136,12 @@ class OrangeGhost(Ghost):
         if not self.path or self.path[-1] != pacman_pos:
             self.path = self.ucs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/yellow2_flip.png"), (self.width, self.height))],
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/yellow2.png"), (self.width, self.height))]
+        ]    
 
     def ucs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -168,6 +210,12 @@ class RedGhost(Ghost):
         if not self.path or self.path[-1] != pacman_pos:
             self.path = self.a_star(pacman_pos) or []
         return None
+
+    def load_image(self, pygame):
+        self.appearance = [
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/red1_flip.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/red2_flip.png"), (self.width, self.height))],
+            [pygame.transform.scale(pygame.image.load("Source/ghosts/red1.png"), (self.width, self.height)), pygame.transform.scale(pygame.image.load("Source/ghosts/red2.png"), (self.width, self.height))]
+        ]
 
     def a_star(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """

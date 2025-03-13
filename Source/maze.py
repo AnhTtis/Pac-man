@@ -3,7 +3,6 @@ class Maze:
         self.__grid = board
         self.__rows = len(board)
         self.__cols = len(board[0])
-    
                 
     def get_neigh(self, pos):
         x, y = pos
@@ -18,6 +17,18 @@ class Maze:
             neiboors.append((x, y + 1))
         return neiboors
     
+    def get_rows(self):
+        return self.__rows
+    
+    def get_cols(self):
+        return self.__cols
+    
+    def get_grid(self, rows, cols):
+        return self.__grid[rows][cols]
+    
+    def set_grid(self, rows, cols, value):
+        self.__grid[rows][cols] = value
+
     def is_wall(self, pos):
         x, y = pos
         return self.__grid[y][x] == '#'
