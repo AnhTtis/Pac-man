@@ -1,6 +1,6 @@
 import pygame
 import time
-import ghost
+from ghost import Ghost, BlueGhost, RedGhost, PinkGhost, OrangeGhost 
 
 # Khởi tạo Pygame và vẽ con ma
 pygame.init()
@@ -18,10 +18,10 @@ pygame.display.set_caption("Ghost Drawing")
 BACKGROUND_COLOR = (0, 0, 0)  # Màu nền
 BLOCK_SIZE = HEIGHT / 40    # Kích thước mỗi ô
 
-blue_ghost = ghost.Blue([50, 50], BLOCK_SIZE, BLOCK_SIZE)
-red_ghost = ghost.Red([100, 50], BLOCK_SIZE, BLOCK_SIZE)
-pink_ghost = ghost.Pink([150, 50], BLOCK_SIZE, BLOCK_SIZE)
-orange_ghost = ghost.Orange([200, 50], BLOCK_SIZE, BLOCK_SIZE)
+blue_ghost = BlueGhost("BlueGhost", [50, 50], (BLOCK_SIZE, BLOCK_SIZE))
+red_ghost = RedGhost("RedGhost", [100, 50], (BLOCK_SIZE, BLOCK_SIZE))
+pink_ghost = PinkGhost("PinkGhost", [150, 50], (BLOCK_SIZE, BLOCK_SIZE))
+orange_ghost = OrangeGhost("OrangeGhost", [200, 50], (BLOCK_SIZE, BLOCK_SIZE))
 
 running = True
 while running:
@@ -38,7 +38,7 @@ while running:
     pink_ghost.display(screen)
     orange_ghost.display(screen)
     
-    blue_ghost.move(1, 0)
+    blue_ghost.move(1, 0, WIDTH, HEIGHT)
 
     # Cập nhật màn hình
     pygame.display.flip()
