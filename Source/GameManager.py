@@ -1,30 +1,38 @@
 import time
 import threading
-from maze import Maze
-from ghosts.ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
-from GhostThread import GhostThread
-from pacman.pacman import Pacman
-import pygame
+from typing import List, Tuple, Dict, Optional, Callable
 import copy
+from maze import Maze 
+from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
+from GhostThread import GhostThread 
+from Pacman import Pacman
+import pygame 
 
 class GameManager:
-    def __init__(self, maze, pacman_start, ghosts, positions, cell_size):
-        self.cell_size = cell_size
+    def __init__(self, maze: Maze, pacman: 'Pacman', 
+                 ghosts: List[Ghost], positions: Dict[str, Tuple[int, int]], cell_size: int):
         self.maze = copy.deepcopy(maze)
-        self.pacman = Pacman(maze, pacman_start)
+        self.pacman = pacman  # Không deepcopy để tránh lỗi Lock
         self.ghosts = copy.deepcopy(ghosts)
-        self.positions = positions
+        self.positions = copy.deepcopy(positions)
         self.lock = threading.Lock()
+        self.cell_size = cell_size
         self.running = threading.Event()
         self.running.set()
-        self.threads = [GhostThread(ghost, self.pacman, self.lock, self.running, self.positions) for ghost in ghosts]
-        for t in self.threads: t.start()
+        self.threads = [
+            GhostThread(ghost, self.pacman, self.lock, self.running, self.positions, self.on_ghost_catch) 
+            for ghost in ghosts
+        ]
 
-    def is_running(self): return self.running.is_set()
-    def get_pacman_pos(self): return self.pacman.pos
+    def on_ghost_catch(self, ghost_name: str, pos: Tuple[int, int]) -> None:
+        print(f"Game Over: {ghost_name} caught Pac-Man at {pos}")
+        # threading.Thread(target=self.stop, daemon=True).start()
 
+    def start(self):
+        for t in self.threads:
+            t.start()
+    
     def draw(self, pygame, screen):
-
         #draw the Board
         rows = self.maze.get_rows()
         cols = self.maze.get_cols()
@@ -42,16 +50,21 @@ class GameManager:
                     pygame.draw.rect(screen, (255, 255, 255), (x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size))
                 elif self.maze.is_pacman(pos):
                     pygame.draw.circle(screen, (255, 255, 0), (int(x * self.cell_size + self.cell_size / 2), int(y * self.cell_size + self.cell_size / 2)), 10)
-        
         #draw the ghosts
         for ghost in self.ghosts:
-            print(ghost)
-            ghost.load_image(pygame)
-            ghost.display(screen)
-        
+            pygame.draw.circle(screen, (255, 0, 0), (int(ghost.pos[0] * self.cell_size + self.cell_size / 2), int(ghost.pos[1] * self.cell_size + self.cell_size / 2)), 10)
 
-    def move_pacman(self, direction): self.pacman.move(direction)
+
     def stop(self):
         self.running.clear()
-        for t in self.threads: t.join()
-    
+        for t in self.threads:
+            t.join()
+
+    def is_running(self) -> bool:
+        return self.running.is_set()
+
+    def get_pacman_pos(self) -> Tuple[int, int]:
+        return self.pacman.pos
+
+    def move_pacman(self, direction: str) -> None:
+        self.pacman.move(direction)

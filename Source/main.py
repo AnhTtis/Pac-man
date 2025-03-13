@@ -1,14 +1,16 @@
+# Mê cung đơn giản
 from maze import Maze
 import time
 
 # file ghost.py in folder ghosts
-from ghosts.ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
-from GameHandle import GameManager
-from pacman.pacman import Pacman
+from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
+from GameManager import GameManager
+from Pacman import Pacman
 import copy
 import threading
 import pygame
 
+# Khởi tạo trò chơi
 maze_grid = [
 ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
 ['#', '.', '#', '#', '.', '.', '#', '#', '#', '#', '#', '#', '#', '.', '.', '#', '#', '#', '.', '.', '.', '#', '#', '.', '.', '.', '#', '#', '#', '#'],
@@ -68,11 +70,10 @@ else:
 
 # Set the figures of the game
 maze = Maze(maze_grid)
-# Adjust the ghost again
-ghosts = [BlueGhost(maze, (14, 1), "BlueGhost", cell_size, cell_size), PinkGhost(maze, (1, 1),"PinkGhost", cell_size, cell_size), RedGhost(maze, (1, 27), "RedGhost", cell_size, cell_size)]
-# ghosts = [BlueGhost(maze, (14, 1), "BlueGhost"), PinkGhost(maze, (1, 1), "PinkGhost"), RedGhost(maze, (1, 27), "RedGhost")]
-positions = {'BlueGhost': (14, 1), 'PinkGhost': (1, 1), 'RedGhost': (1, 27)}
-game = GameManager(maze, (14, 24), ghosts, positions, cell_size)
+pacman = Pacman(maze, (14, 24))  # Vị trí ban đầu của Pac-Man
+ghosts = [BlueGhost(maze, (1, 2), "BlueGhost", cell_size, cell_size)]  # BlueGhost bắt đầu tại (1, 2)
+positions = {"BlueGhost": (1, 2)}
+game = GameManager(maze, pacman, ghosts, positions, cell_size)
 
 # create the screen
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -80,12 +81,15 @@ timer = pygame.time.Clock()
  
 fps = 60
 font = pygame.font.Font('freesansbold.ttf', 32)
- 
+
+game.start()
+
 running = True
 while running:
     timer.tick(fps)
     screen.fill((0, 0, 0))
     game.draw(pygame, screen)
+    print(positions)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
              running = False
@@ -93,3 +97,29 @@ while running:
     pygame.display.flip()
  
 pygame.quit()
+
+# Bắt đầu trò chơi (khởi động các luồng ghost)
+
+#while running and game.is_running():
+    # for event in pygame.event.get():
+    #     if event.type == pygame.QUIT:
+    #         running = False
+    #     elif event.type == pygame.KEYDOWN:
+    #         if event.key == pygame.K_UP:
+    #             game.move_pacman("up")
+    #             print(f"Pac-Man moved to {game.get_pacman_pos()}")
+    #         elif event.key == pygame.K_DOWN:
+    #             game.move_pacman("down")
+    #             print(f"Pac-Man moved to {game.get_pacman_pos()}")
+    #         elif event.key == pygame.K_LEFT:
+    #             game.move_pacman("left")
+    #             print(f"Pac-Man moved to {game.get_pacman_pos()}")
+    #         elif event.key == pygame.K_RIGHT:
+    #             game.move_pacman("right")
+    #             print(f"Pac-Man moved to {game.get_pacman_pos()}")
+    #         elif event.key == pygame.K_q:
+    #             running = False
+    #             print("Quitting...")
+
+game.stop()
+
