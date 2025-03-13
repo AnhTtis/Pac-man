@@ -36,7 +36,7 @@ maze_grid = [
 ['#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
 ['#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
 ['#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
-['#', '.', '*', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', 'P', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '*', '#', '#'],
+['#', '.', '*', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '*', '#', '#'],
 ['#', '.', '#', '#', '.', '#', '#', '#', '.', '#', '.', '#', '#', '#', '#', '.', '#', '#', '.', '.', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#'],
 ['#', '.', '#', '#', '.', '#', '#', '.', '.', '#', '.', '#', '#', '#', '#', '.', '#', '#', '.', '.', '#', '.', '.', '#', '#', '.', '#', '#', '.', '#'],
 ['#', '.', '#', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
@@ -70,9 +70,9 @@ else:
 
 # Set the figures of the game
 maze = Maze(maze_grid)
-pacman = Pacman(maze, (14, 24))  # Vị trí ban đầu của Pac-Man
-ghosts = [BlueGhost(maze, (1, 2), "BlueGhost", cell_size, cell_size)]  # BlueGhost bắt đầu tại (1, 2)
-positions = {"BlueGhost": (1, 2)}
+pacman = Pacman(maze, (14, 24), cell_size, cell_size)  # Vị trí ban đầu của Pac-Man
+ghosts = [BlueGhost(maze, (1, 2), "BlueGhost", cell_size, cell_size), PinkGhost(maze, (1, 3), "PinkGhost", cell_size, cell_size)]  # BlueGhost bắt đầu tại (1, 2)
+positions = {"BlueGhost": (1, 2), "PinkGhost": (1, 3)}
 game = GameManager(maze, pacman, ghosts, positions, cell_size)
 
 # create the screen
@@ -92,7 +92,28 @@ while running:
     print(positions)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-             running = False
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                game.pacman.set_direction("up")
+                game.move_pacman()
+                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+            elif event.key == pygame.K_DOWN:
+                game.pacman.set_direction("down")
+                game.move_pacman()
+                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+            elif event.key == pygame.K_LEFT:
+                game.pacman.set_direction("left")
+                game.move_pacman()
+                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+            elif event.key == pygame.K_RIGHT:
+                game.pacman.set_direction("right")
+                game.move_pacman()
+                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+            elif event.key == pygame.K_q:
+                running = False
+                print("Quitting...")
+
  
     pygame.display.flip()
  
@@ -102,24 +123,7 @@ pygame.quit()
 
 #while running and game.is_running():
     # for event in pygame.event.get():
-    #     if event.type == pygame.QUIT:
-    #         running = False
-    #     elif event.type == pygame.KEYDOWN:
-    #         if event.key == pygame.K_UP:
-    #             game.move_pacman("up")
-    #             print(f"Pac-Man moved to {game.get_pacman_pos()}")
-    #         elif event.key == pygame.K_DOWN:
-    #             game.move_pacman("down")
-    #             print(f"Pac-Man moved to {game.get_pacman_pos()}")
-    #         elif event.key == pygame.K_LEFT:
-    #             game.move_pacman("left")
-    #             print(f"Pac-Man moved to {game.get_pacman_pos()}")
-    #         elif event.key == pygame.K_RIGHT:
-    #             game.move_pacman("right")
-    #             print(f"Pac-Man moved to {game.get_pacman_pos()}")
-    #         elif event.key == pygame.K_q:
-    #             running = False
-    #             print("Quitting...")
+    #     
 
 game.stop()
 

@@ -11,10 +11,11 @@ import pygame
 class GameManager:
     def __init__(self, maze: Maze, pacman: 'Pacman', 
                  ghosts: List[Ghost], positions: Dict[str, Tuple[int, int]], cell_size: int):
+        self.load_images = False
         self.maze = copy.deepcopy(maze)
         self.pacman = pacman  # Không deepcopy để tránh lỗi Lock
         self.ghosts = copy.deepcopy(ghosts)
-        self.positions = copy.deepcopy(positions)
+        self.positions = positions
         self.lock = threading.Lock()
         self.cell_size = cell_size
         self.running = threading.Event()
@@ -48,11 +49,20 @@ class GameManager:
                     pygame.draw.circle(screen, (255, 255, 255), (int(x * self.cell_size + self.cell_size / 2), int(y * self.cell_size + self.cell_size / 2)), 5)
                 elif self.maze.is_gate(pos):
                     pygame.draw.rect(screen, (255, 255, 255), (x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size))
-                elif self.maze.is_pacman(pos):
-                    pygame.draw.circle(screen, (255, 255, 0), (int(x * self.cell_size + self.cell_size / 2), int(y * self.cell_size + self.cell_size / 2)), 10)
-        #draw the ghosts
+                    
+        if self.load_images == False:
+            for ghost in self.ghosts:
+                ghost.load_image(pygame)
+            self.pacman.load_image(pygame)
+            self.load_images = True
+
+        #draw the ghosts 
         for ghost in self.ghosts:
-            pygame.draw.circle(screen, (255, 0, 0), (int(ghost.pos[0] * self.cell_size + self.cell_size / 2), int(ghost.pos[1] * self.cell_size + self.cell_size / 2)), 10)
+            ghost.set_pos(self.positions[ghost.name])
+            ghost.display(screen, self.cell_size)
+            
+        # draw pac-man
+        self.pacman.display(screen, self.cell_size)        
 
 
     def stop(self):
@@ -66,5 +76,5 @@ class GameManager:
     def get_pacman_pos(self) -> Tuple[int, int]:
         return self.pacman.pos
 
-    def move_pacman(self, direction: str) -> None:
-        self.pacman.move(direction)
+    def move_pacman(self) -> None:
+        self.pacman.move()
