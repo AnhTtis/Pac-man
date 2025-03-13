@@ -17,8 +17,9 @@ class Ghost:
         self.maze = maze
         self.pos = start_pos
         self.name = name
+        self.path: List[Tuple[int, int]] = []
 
-    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+    def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
         Calculate the next position for the ghost to move towards Pac-Man.
 
@@ -32,19 +33,9 @@ class Ghost:
 
 class BlueGhost(Ghost):
     """Ghost that uses Breadth-First Search to chase Pac-Man."""
-    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        """
-        Move the ghost towards Pac-Man using BFS.
-
-        Args:
-            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's position
-
-        Returns:
-            Next position as (x, y) tuple, or None if no path exists
-        """
-        path = self.bfs(pacman_pos)
-        if path and len(path) > 1:
-            return path[1]
+    def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        if not self.path or self.path[-1] != pacman_pos:
+            self.path = self.bfs(pacman_pos) or []
         return None
 
     def bfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -73,19 +64,9 @@ class BlueGhost(Ghost):
 
 class PinkGhost(Ghost):
     """Ghost that uses Depth-First Search to chase Pac-Man."""
-    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        """
-        Move the ghost towards Pac-Man using DFS.
-
-        Args:
-            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's position
-
-        Returns:
-            Next position as (x, y) tuple, or None if no path exists
-        """
-        path = self.dfs(pacman_pos)
-        if path and len(path) > 1:
-            return path[1]
+    def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        if not self.path or self.path[-1] != pacman_pos:
+            self.path = self.dfs(pacman_pos) or []
         return None
 
     def dfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -115,19 +96,9 @@ class PinkGhost(Ghost):
 
 class OrangeGhost(Ghost):
     """Ghost that uses Uniform Cost Search to chase Pac-Man."""
-    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        """
-        Move the ghost towards Pac-Man using UCS.
-
-        Args:
-            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's position
-
-        Returns:
-            Next position as (x, y) tuple, or None if no path exists
-        """
-        path = self.ucs(pacman_pos)
-        if path and len(path) > 1:
-            return path[1]
+    def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        if not self.path or self.path[-1] != pacman_pos:
+            self.path = self.ucs(pacman_pos) or []
         return None
 
     def ucs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -193,19 +164,9 @@ class OrangeGhost(Ghost):
 
 class RedGhost(Ghost):
     """Ghost that uses A* Search to chase Pac-Man."""
-    def move(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        """
-        Move the ghost towards Pac-Man using A* search.
-
-        Args:
-            pacman_pos: Tuple of (x, y) coordinates of Pac-Man's position
-
-        Returns:
-            Next position as (x, y) tuple, or None if no path exists
-        """
-        path = self.a_star(pacman_pos)
-        if path and len(path) > 1:
-            return path[1]
+    def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        if not self.path or self.path[-1] != pacman_pos:
+            self.path = self.a_star(pacman_pos) or []
         return None
 
     def a_star(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
