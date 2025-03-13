@@ -1,11 +1,11 @@
 from maze import Maze
+from typing import List, Tuple
 import threading
 
 class Pacman:
-    def __init__(self, maze, pos, width, height):
-        self.width = width
-        self.height = height
-        self.pos = pos #tuple of (x, y)
+    def __init__(self, maze, pos: List[int], size: Tuple[int, int]):
+        self.pos = pos #Array of (x, y)
+        self.size = size
         self.score = 0 #score of pacman
         self.maze = maze #maze class
         #avoid many ghost threads to access the same time
