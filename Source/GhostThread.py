@@ -17,7 +17,7 @@ class GhostThread(threading.Thread):
         self.running = running
         self.positions = positions
         self.on_catch = on_catch
-        self.move_interval = 1
+        self.move_interval = 0.6
 
         self.pathfinding_thread = threading.Thread(target=self.update_path, daemon=True)
         self.pathfinding_thread.start()
