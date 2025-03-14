@@ -3,9 +3,9 @@ import threading
 from typing import List, Tuple, Dict, Optional, Callable
 import copy
 from maze import Maze 
-from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
+from ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
 from GhostThread import GhostThread 
-from Pacman import Pacman
+from pacman import Pacman
 import pygame 
 
 class GameManager:

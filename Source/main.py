@@ -3,9 +3,9 @@ from maze import Maze
 import time
 
 # file ghost.py in folder ghosts
-from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
+from ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
 from GameManager import GameManager
-from Pacman import Pacman, PacmanState
+from pacman import Pacman, PacmanState
 import copy
 import threading
 import pygame
@@ -51,21 +51,18 @@ pygame.init()
 # get the width and height of the screen
 infoObject = pygame.display.Info()
 screen_width, screen_height = infoObject.current_w, infoObject.current_h
-screen_height *= 0.9
-screen_width *= 0.9
+screen_height *= 0.8
+screen_width *= 0.8
 
-if screen_width > screen_height:
-    screen_width = int(screen_height)
-else:
-    screen_height = int(screen_width)
+game_board_size = int(screen_height) if screen_width > screen_height else int(screen_height)
 
 color = 'blue'
 PI = 3.14159265358979323846
 #draw the Board
 rows = len(maze_grid)
 cols = len(maze_grid[0])
-cell_width = int(screen_width / cols)
-cell_height = int(screen_height / rows)
+cell_width = int(game_board_size / cols)
+cell_height = int(game_board_size / rows)
 
 # Restrist it to a square
 if cell_width > cell_height:
@@ -92,7 +89,7 @@ switch_interval = 0.2
 last_switch_time = time.time()
 # create the screen
 
-screen = pygame.display.set_mode((cell_size * cols, cell_size * rows))
+screen = pygame.display.set_mode((screen_width, screen_height))
 timer = pygame.time.Clock()
  
 fps = 800

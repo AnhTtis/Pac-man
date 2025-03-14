@@ -3,8 +3,8 @@ import time
 from typing import Dict, Tuple, Optional, Callable
 
 from maze import Maze
-from Ghost import Ghost
-from Pacman import Pacman
+from ghost import Ghost
+from pacman import Pacman
 
 class GhostThread(threading.Thread):
     def __init__(self, ghost: Ghost, pacman: 'Pacman', lock: threading.Lock, 
