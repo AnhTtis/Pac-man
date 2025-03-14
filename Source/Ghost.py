@@ -2,11 +2,10 @@ from collections import deque
 from typing import List, Tuple, Dict, Set, Optional
 import heapq
 from maze import Maze
-from pygame import transform, image
 
 class Ghost:
     """Base class for Pac-Man ghost AI behaviors."""
-    def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
+    def __init__(self, maze: 'Maze', start_pos: Tuple[int, int], name: str, size:int):
         """
         Initialize a ghost with its maze, starting position, and name.
 
@@ -22,6 +21,11 @@ class Ghost:
         self.face_right = False
         self.appearance = None
         self.path: List[Tuple[int, int]] = []
+        self.first_move = False
+        
+    def load_image(self, pygame):
+        # load the image of the ghost
+        pass
 
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
@@ -41,7 +45,7 @@ class Ghost:
     
     def display(self, screen):
         if self.appearance:
-            screen.blit(self.appearance[self.face_right], self.pos)
+            screen.blit(self.appearance[self.face_right], (self.pos[0] * self.size[0], self.pos[1] * self.size[1]))
 
     def set_pos(self, pos: Tuple[int, int]) -> None:
         """
@@ -52,12 +56,20 @@ class Ghost:
         """
         self.pos = pos
         
-class BlueGhost(Ghost): #BFS
+class BlueGhost(Ghost):
     """Ghost that uses Breadth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.bfs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.bfs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/blue.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
+    
 
     def bfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -87,8 +99,15 @@ class PinkGhost(Ghost):
     """Ghost that uses Depth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.dfs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.dfs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/pink.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
 
     def dfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -119,8 +138,15 @@ class OrangeGhost(Ghost):
     """Ghost that uses Uniform Cost Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.ucs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.ucs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
 
     def ucs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -187,8 +213,15 @@ class RedGhost(Ghost):
     """Ghost that uses A* Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.a_star(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.a_star(pacman_pos) or []
         return None
+
+    def load_image(self, pygame):
+        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/red.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
     
     def a_star(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """

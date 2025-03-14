@@ -1,8 +1,7 @@
 from maze import Maze
-from typing import List, Tuple
 import threading
-from pygame import transform, image
 from enum import Enum
+from pygame import image, transform
 
 class PacmanState(Enum):
     CLOSE   = 0
@@ -12,9 +11,10 @@ class PacmanState(Enum):
     RIGHT   = 4
 
 class Pacman:
-    def __init__(self, maze, pos: List[int], size: Tuple[int, int]):
-        self.pos = pos #Array of ơx, y)
-        self.size = size
+    def __init__(self, maze, pos, width, height):
+        self.width = width
+        self.height = height
+        self.pos = pos #tuple of (x, y)
         self.score = 0 #score of pacman
         self.maze = maze #maze class
         #avoid many ghost threads to access the same time
@@ -26,9 +26,11 @@ class Pacman:
             transform.scale(image.load("pacman/pacman_open_mouth_left.png"), self.size),
             transform.scale(image.load("pacman/pacman_open_mouth_right.png"), self.size)
         ]
+        self.appearance = None
         self.direction = PacmanState.CLOSE
         
-    def set_direction(self, direction):
+        
+    def set_direction(self, direction: PacmanState):
         self.direction = direction
 
     def move(self):
@@ -49,12 +51,32 @@ class Pacman:
         elif self.maze.is_big_dot(self.pos):
             self.score += 5
         return self.pos
+    
+    def load_image(self, pygame):
+        self.appearance = [
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_close_mouth.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_top.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_bot.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_left.png"), (self.width, self.height)), 
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_right.png"), (self.width, self.height))
+        ]
         
-    def display(self, screen):
-        screen.blit(self.appearance[self.direction.value], (self.pos[0], self.pos[1]))
-
+    def display(self, screen, cell_size):
+        x, y = self.pos
+        if self.direction == PacmanState.UP:
+            state = 1
+        elif self.direction == PacmanState.DOWN:
+            state = 2
+        elif self.direction == PacmanState.LEFT:
+            state = 3
+        elif self.direction == PacmanState.RIGHT:
+            state = 4
+        else:
+            state = 0
+        screen.blit(self.appearance[state], (x * cell_size, y * cell_size))
+    
     def __str__(self):
-        return f"Pacman: x={self.pos[0]}, y={self.pos[1]}, score={self.score}"
+        return f"Pacman: x={self.x}, y={self.y}, score={self.score}"
     
     
     
