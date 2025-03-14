@@ -25,9 +25,6 @@ class GameManager:
             for ghost in ghosts
         ]
 
-        for ghost in self.ghosts:
-            ghost.load_appearance("ghosts/" + ghost.name + ".png")
-
     def on_ghost_catch(self, ghost_name: str, pos: Tuple[int, int]) -> None:
         print(f"Game Over: {ghost_name} caught Pac-Man at {pos}")
         # threading.Thread(target=self.stop, daemon=True).start()
@@ -65,7 +62,7 @@ class GameManager:
             ghost.display(screen)
             
         # draw pac-man
-        self.pacman.display(screen)        
+        self.pacman.display(screen, self.cell_size)        
 
 
     def stop(self):
@@ -76,7 +73,7 @@ class GameManager:
     def is_running(self) -> bool:
         return self.running.is_set()
 
-    def get_pacman_pos(self) -> List[int]:
+    def get_pacman_pos(self) -> Tuple[int, int]:
         return self.pacman.pos
 
     def move_pacman(self) -> None:

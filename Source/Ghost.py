@@ -39,10 +39,6 @@ class Ghost:
         """
         raise NotImplementedError("This method should be implemented by a subclass")
     
-    def load_appearance(self, filepath: str):
-        self.appearance = [transform.scale(image.load(filepath), self.size)]
-        self.appearance.append(transform.flip(self.appearance[0], True, False))
-    
     def display(self, screen):
         if self.appearance:
             screen.blit(self.appearance[self.face_right], (self.pos[0] * self.size[0], self.pos[1] * self.size[1]))
@@ -67,7 +63,7 @@ class BlueGhost(Ghost):
         return None
     
     def load_image(self, pygame):
-        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/blue.png"), self.size)]
+        self.appearance = [pygame.transform.scale(pygame.image.load("ghosts/blue.png"), self.size)]
         self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
     
 
@@ -106,7 +102,7 @@ class PinkGhost(Ghost):
         return None
     
     def load_image(self, pygame):
-        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/pink.png"), self.size)]
+        self.appearance = [pygame.transform.scale(pygame.image.load("ghosts/pink.png"), self.size)]
         self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
 
     def dfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -145,7 +141,7 @@ class OrangeGhost(Ghost):
         return None
     
     def load_image(self, pygame):
-        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/yellow.png"), self.size)]
+        self.appearance = [pygame.transform.scale(pygame.image.load("ghosts/yellow.png"), self.size)]
         self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
 
     def ucs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -220,7 +216,7 @@ class RedGhost(Ghost):
         return None
 
     def load_image(self, pygame):
-        self.appearance = [pygame.transform.scale(pygame.image.load("Source/ghosts/red.png"), self.size)]
+        self.appearance = [pygame.transform.scale(pygame.image.load("ghosts/red.png"), self.size)]
         self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
     
     def a_star(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:

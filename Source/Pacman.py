@@ -1,7 +1,6 @@
 from maze import Maze
 import threading
 from enum import Enum
-from pygame import image, transform
 
 class PacmanState(Enum):
     CLOSE   = 0
@@ -19,13 +18,6 @@ class Pacman:
         self.maze = maze #maze class
         #avoid many ghost threads to access the same time
         self.lock = threading.Lock()
-        self.appearance = [
-            transform.scale(image.load("pacman/pacman_close_mouth.png"), self.size),
-            transform.scale(image.load("pacman/pacman_open_mouth_top.png"), self.size),
-            transform.scale(image.load("pacman/pacman_open_mouth_bot.png"), self.size),
-            transform.scale(image.load("pacman/pacman_open_mouth_left.png"), self.size),
-            transform.scale(image.load("pacman/pacman_open_mouth_right.png"), self.size)
-        ]
         self.appearance = None
         self.direction = PacmanState.CLOSE
         
@@ -36,16 +28,16 @@ class Pacman:
     def move(self):
         if self.direction == PacmanState.UP and not self.maze.is_wall((self.pos[0], self.pos[1] - 1)):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
-            self.pos[1] -= 1
+            self.pos = (self.pos[0], self.pos[1] - 1)
         elif self.direction == PacmanState.DOWN and not self.maze.is_wall((self.pos[0], self.pos[1] + 1)):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
-            self.pos[1] += 1
+            self.pos = (self.pos[0], self.pos[1] + 1)
         elif self.direction == PacmanState.LEFT and not self.maze.is_wall((self.pos[0] - 1, self.pos[1])):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
-            self.pos[0] -= 1
+            self.pos = (self.pos[0] - 1, self.pos[1])
         elif self.direction == PacmanState.RIGHT and not self.maze.is_wall((self.pos[0] + 1, self.pos[1])):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
-            self.pos[0] += 1
+            self.pos = (self.pos[0] + 1, self.pos[1])
         if self.maze.is_dot(self.pos):
             self.score += 1
         elif self.maze.is_big_dot(self.pos):
@@ -54,11 +46,11 @@ class Pacman:
     
     def load_image(self, pygame):
         self.appearance = [
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_close_mouth.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_top.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_bot.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_left.png"), (self.width, self.height)), 
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_right.png"), (self.width, self.height))
+            pygame.transform.scale(pygame.image.load("pacman/pacman_close_mouth.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_top.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_bot.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_left.png"), (self.width, self.height)), 
+            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_right.png"), (self.width, self.height))
         ]
         
     def display(self, screen, cell_size):
