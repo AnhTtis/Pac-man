@@ -17,8 +17,8 @@ class GhostThread(threading.Thread):
         self.running = running
         self.positions = positions
         self.on_catch = on_catch
+        self.last_pos = ghost.pos
         self.move_interval = 1
-
         self.pathfinding_thread = threading.Thread(target=self.update_path, daemon=True)
         self.pathfinding_thread.start()
 
@@ -28,8 +28,11 @@ class GhostThread(threading.Thread):
             with self.lock:
         #         current_pacman_pos = self.pacman.pos
         #         if last_pacman_pos != current_pacman_pos: 
+                # make sure the ghost not come back to the last position
+                # make the wall at the last position
+                self.ghost.maze.set_element(self.last_pos, '#')
                 self.ghost.find_path(self.pacman.pos)
-                print(self.ghost.path)
+                self.ghost.maze.set_element(self.last_pos, '.')
             time.sleep(0.2)
             #         last_pacman_pos = current_pacman_pos
 
@@ -40,6 +43,7 @@ class GhostThread(threading.Thread):
                     next_pos = self.ghost.path[1]
 
                     if next_pos not in self.positions.values():
+                        self.last_pos = self.ghost.pos
                         self.ghost.pos = next_pos
                         self.ghost.path.pop(0)
                         self.positions[self.ghost.name] = self.ghost.pos
@@ -49,4 +53,6 @@ class GhostThread(threading.Thread):
                             if self.on_catch:
                                 self.on_catch(self.ghost.name, self.ghost.pos)
                             self.running.clear()
+                else :
+                    self.last_pos = None
             time.sleep(self.move_interval)
