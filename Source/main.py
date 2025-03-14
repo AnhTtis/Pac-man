@@ -91,6 +91,8 @@ timer = pygame.time.Clock()
 fps = 800
 font = pygame.font.Font('freesansbold.ttf', 32)
 
+# ... (phần đầu giữ nguyên)
+
 game.start()
 
 running = True
@@ -106,30 +108,27 @@ while running:
             if event.key == pygame.K_UP:
                 pacman_closed = False
                 pacman_state = "up"
-                game.pacman.set_direction("up")
-                game.move_pacman()
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                game.pacman.set_direction("up")  # Chỉ thay đổi hướng
+                print(f"Pac-Man direction set to up, position: {game.get_pacman_pos()}")
             elif event.key == pygame.K_DOWN:
                 pacman_closed = False
                 pacman_state = "down"
                 game.pacman.set_direction("down")
-                game.move_pacman()
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                print(f"Pac-Man direction set to down, position: {game.get_pacman_pos()}")
             elif event.key == pygame.K_LEFT:
                 pacman_closed = False
                 pacman_state = "left"
                 game.pacman.set_direction("left")
-                game.move_pacman()
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                print(f"Pac-Man direction set to left, position: {game.get_pacman_pos()}")
             elif event.key == pygame.K_RIGHT:
                 pacman_closed = False
                 pacman_state = "right"
                 game.pacman.set_direction("right")
-                game.move_pacman()
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                print(f"Pac-Man direction set to right, position: {game.get_pacman_pos()}")
             elif event.key == pygame.K_q:
                 running = False
                 print("Quitting...")
+
     # Switch Pac-Man sprite
     current_time = time.time()
     if current_time - last_switch_time > switch_interval:
@@ -141,16 +140,7 @@ while running:
             pacman_closed = False
         last_switch_time = current_time
 
- 
     pygame.display.flip()
- 
+
 pygame.quit()
-
-# Bắt đầu trò chơi (khởi động các luồng ghost)
-
-#while running and game.is_running():
-    # for event in pygame.event.get():
-    #     
-
 game.stop()
-

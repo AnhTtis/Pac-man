@@ -57,8 +57,7 @@ class BlueGhost(Ghost): #BFS
     
     """Ghost that uses Breadth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.bfs(pacman_pos) or []
+        self.path = self.bfs(pacman_pos) or []
         return None
 
     def bfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -93,8 +92,7 @@ class PinkGhost(Ghost):
 
     """Ghost that uses Depth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.dfs(pacman_pos) or []
+        self.path = self.dfs(pacman_pos) or []
         return None
 
     def dfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -130,8 +128,7 @@ class OrangeGhost(Ghost):
 
     """Ghost that uses Uniform Cost Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.ucs(pacman_pos) or []
+        self.path = self.ucs(pacman_pos) or []
         return None
 
     def ucs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
@@ -203,8 +200,7 @@ class RedGhost(Ghost):
 
     """Ghost that uses A* Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
-        if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.a_star(pacman_pos) or []
+        self.path = self.a_star(pacman_pos) or []
         return None
     
     def a_star(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
