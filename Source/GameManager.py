@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import time
-import threading
-from typing import List, Tuple, Dict, Optional, Callable
-import copy
-from maze import Maze 
-from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
-from GhostThread import GhostThread 
-from Pacman import Pacman
-=======
 # import time
 # import threading
 # from typing import List, Tuple, Dict, Optional, Callable
@@ -17,7 +7,6 @@ from Pacman import Pacman
 # from GhostThread import GhostThread 
 # from Pacman import Pacman
 # import pygame 
->>>>>>> 3005eb358132bb4f2bcd70d001c5d0518c329491
 
 # class GameManager:
 #     def __init__(self, maze: Maze, pacman: 'Pacman', 
