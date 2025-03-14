@@ -52,7 +52,7 @@ class Ghost:
 class BlueGhost(Ghost): #BFS
     def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
         super().__init__(name, maze, start_pos, size, (0, 0, 255))
-        self.appearance = [transform.scale(image.load("blue.png"), self.size)]
+        self.appearance = [transform.scale(image.load("Source/ghosts/blue.png"), self.size)]
         self.appearance.append(transform.flip(self.appearance[0], True, False))
     
     """Ghost that uses Breadth-First Search to chase Pac-Man."""
@@ -87,7 +87,7 @@ class BlueGhost(Ghost): #BFS
 class PinkGhost(Ghost):
     def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
         super().__init__(name, maze, start_pos, size, (255, 105, 180))
-        self.appearance = [transform.scale(image.load("pink.png"), self.size)]
+        self.appearance = [transform.scale(image.load("Source/ghosts/pink.png"), self.size)]
         self.appearance.append(transform.flip(self.appearance[0], True, False))
 
     """Ghost that uses Depth-First Search to chase Pac-Man."""
@@ -123,7 +123,7 @@ class PinkGhost(Ghost):
 class OrangeGhost(Ghost):
     def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
         super().__init__(name, maze, start_pos, size, (255, 255, 0))
-        self.appearance = [transform.scale(image.load("orange.png"), self.size)]
+        self.appearance = [transform.scale(image.load("Source/ghosts/orange.png"), self.size)]
         self.appearance.append(transform.flip(self.appearance[0], True, False))
 
     """Ghost that uses Uniform Cost Search to chase Pac-Man."""
@@ -195,7 +195,7 @@ class OrangeGhost(Ghost):
 class RedGhost(Ghost):
     def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
         super().__init__(name, maze, start_pos, size, (255, 0, 0))
-        self.appearance = [transform.scale(image.load("red.png"), self.size)]
+        self.appearance = [transform.scale(image.load("Source/ghosts/red.png"), self.size)]
         self.appearance.append(transform.flip(self.appearance[0], True, False))
 
     """Ghost that uses A* Search to chase Pac-Man."""

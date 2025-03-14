@@ -92,9 +92,10 @@ import pygame
 class GameManager:
     def __init__(self, maze: Maze, pacman: 'Pacman', 
                  ghosts: List[Ghost], positions: Dict[str, Tuple[int, int]], cell_size: int):
+        self.load_images = False
         self.maze = maze
         self.pacman = pacman
-        self.ghosts = copy.deepcopy(ghosts)
+        self.ghosts = ghosts
         self.positions = positions
         self.lock = threading.Lock()
         self.cell_size = cell_size
@@ -131,15 +132,12 @@ class GameManager:
                     pygame.draw.circle(screen, (255, 255, 255), (int(x * self.cell_size + self.cell_size / 2), int(y * self.cell_size + self.cell_size / 2)), 5)
                 elif self.maze.is_gate(pos):
                     pygame.draw.rect(screen, (255, 255, 255), (x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size))
-<<<<<<< HEAD
-=======
                     
         if not self.load_images:
             for ghost in self.ghosts:
                 ghost.load_image(pygame)
             self.pacman.load_image(pygame)
             self.load_images = True
->>>>>>> 3005eb358132bb4f2bcd70d001c5d0518c329491
 
         for ghost in self.ghosts:
             ghost.set_pos(self.positions[ghost.name])
