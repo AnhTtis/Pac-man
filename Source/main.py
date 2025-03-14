@@ -1,224 +1,146 @@
-# from Maze import Maze
-# from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
-# from GameManager import GameManager
-# from Pacman import Pacman
-# import pygame
-
-# import copy
-# import threading
-# import time
-
-
-# # maze_grid = [
-# # ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
-# # ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
-# # ['#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#'],
-# # ['#', '#', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
-# # ['#', '#', '*', '#', ' ', ' ', '#', '.', '#', ' ', ' ', ' ', '#', '.', '#', '#', '.', '#', ' ', ' ', ' ', '#', '.', '#', ' ', ' ', '#', '*', '#', '#'],
-# # ['#', '#', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
-# # ['#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#'],
-# # ['#', '#', '.', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
-# # ['#', '#', '.', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
-# # ['#', '#', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '#', '#'],
-# # ['#', '#', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', ' ', '#', '#', ' ', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#'],
-# # ['#', ' ', ' ', ' ', ' ', ' ', '#', '.', '#', '#', '#', '#', '#', ' ', '#', '#', ' ', '#', '#', '#', '#', '#', '.', '#', ' ', ' ', ' ', ' ', ' ', '#'],
-# # ['#', ' ', ' ', ' ', ' ', ' ', '#', '.', '#', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', '#', '.', '#', ' ', ' ', ' ', ' ', ' ', '#'],
-# # ['#', ' ', ' ', ' ', ' ', ' ', '#', '.', '#', '#', ' ', '#', '#', '#', 'G', 'G', '#', '#', '#', ' ', '#', '#', '.', '#', ' ', ' ', ' ', ' ', ' ', '#'],
-# # ['#', '#', '#', '#', '#', '#', '#', '.', '#', '#', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#'],
-# # [' ', ' ', ' ', ' ', ' ', ' ', ' ', '.', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '.', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-# # ['#', '#', '#', '#', '#', '#', '#', '.', '#', '#', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#'],
-# # ['#', ' ', ' ', ' ', ' ', ' ', '#', '.', '#', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', ' ', '#', '#', '.', '#', ' ', ' ', ' ', ' ', ' ', '#'],
-# # ['#', ' ', ' ', ' ', ' ', ' ', '#', '.', '#', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', '#', '.', '#', ' ', ' ', ' ', ' ', ' ', '#'],
-# # ['#', ' ', ' ', ' ', ' ', ' ', '#', '.', '#', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', ' ', '#', '#', '.', '#', ' ', ' ', ' ', ' ', ' ', '#'],
-# # ['#', '#', '#', '#', '#', '#', '#', '.', '#', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', ' ', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#'],
-# # ['#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#'],
-# # ['#', '#', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
-# # ['#', '#', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
-# # ['#', '#', '*', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '*', '#', '#'],
-# # ['#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#'],
-# # ['#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#'],
-# # ['#', '#', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '#', '#'],
-# # ['#', '#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '.', '#', '#'],
-# # ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
-# # ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#']
-# #     ]
-
-# pygame.init()
-
-# WINDOW_WIDTH = 400
-# WINDOW_HEIGHT = 300
-# screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-# pygame.display.set_caption("Test Arrow Keys")
-
-# # Màu sắc
-# WHITE = (255, 255, 255)
-# BLACK = (0, 0, 0)
-
-
-# maze_grid = [
-#     ["#", "#", "#", "#", "#"],
-#     ["#", ".", ".", ".", "#"],
-#     ["#", ".", "#", ".", "#"],
-#     ["#", ".", ".", "P", "#"],
-#     ["#", "#", "#", "#", "#"]
-# ]
-
-# # maze = Maze(maze_grid)
-# # # Add pacman and all ghosts to the game, ghosts have name and position
-# # ghosts = [BlueGhost(maze, (14, 1), "BlueGhost")]
-# # #positions = {'BlueGhost': (3, 4), 'PinkGhost': (5, 3)}
-# # positions = {"BlueGhost": (14, 1)}
-# # game = GameManager(maze, (14, 24), ghosts, positions)
-# # print(game.get_pacman_pos())
-
-# maze = Maze(maze_grid)
-# #test blue ghost
-# pacman = Pacman(maze, (3, 3))
-# ghosts = [BlueGhost(maze, (1, 2), "BlueGhost")]
-# positions = {"BlueGhost": (1, 2)}
-# #test orange ghost
-# # pacman = Pacman(maze, (3, 3))
-# # ghosts = [OrangeGhost(maze, (1, 2), "OrangeGhost")]
-# # positions = {"OrangeGhost": (1, 2)}
-# #test pink ghost
-# # pacman = Pacman(maze, (3, 3))
-# # ghosts = [PinkGhost(maze, (1, 2), "PinkGhost")]
-# # positions = {"PinkGhost": (1, 2)}
-# #test red ghost
-# # pacman = Pacman(maze, (3, 3))
-# # ghosts = [RedGhost(maze, (1, 2), "RedGhost")]
-# # positions = {"RedGhost": (1, 2)}
-# game = GameManager(maze, pacman, ghosts, positions)
-# game.start()
-
-# clock = pygame.time.Clock()
-# running = True
-
-# print("testtest")
-
-# while running and game.is_running():
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             running = False
-#         elif event.type == pygame.KEYDOWN:
-#             if event.key == pygame.K_UP:
-#                 game.move_pacman("up")
-#                 print(f"Pac-Man moved to {game.get_pacman_pos()}")
-#             elif event.key == pygame.K_DOWN:
-#                 game.move_pacman("down")
-#                 print(f"Pac-Man moved to {game.get_pacman_pos()}")
-#             elif event.key == pygame.K_LEFT:
-#                 game.move_pacman("left")
-#                 print(f"Pac-Man moved to {game.get_pacman_pos()}")
-#             elif event.key == pygame.K_RIGHT:
-#                 game.move_pacman("right")
-#                 print(f"Pac-Man moved to {game.get_pacman_pos()}")
-#             elif event.key == pygame.K_q:
-#                 running = False
-
-# while game.is_running():
-#     time.sleep(1)
-# game.stop()
-
-import pygame
+# Mê cung đơn giản
 from maze import Maze
-from Ghost import BlueGhost
+import time
+
+# file ghost.py in folder ghosts
+from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
 from GameManager import GameManager
 from Pacman import Pacman
-
-# Khởi tạo Pygame
-pygame.init()
-
-# Cấu hình cửa sổ
-CELL_SIZE = 40  # Kích thước mỗi ô trong mê cung
-WINDOW_WIDTH = 5 * CELL_SIZE  # Chiều rộng cửa sổ (5 cột)
-WINDOW_HEIGHT = 5 * CELL_SIZE  # Chiều cao cửa sổ (5 hàng)
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("Pac-Man Game")
-
-# Màu sắc
-WHITE = (255, 255, 255)  # Nền
-BLACK = (0, 0, 0)       # Tường
-YELLOW = (255, 255, 0)   # Pac-Man
-BLUE = (0, 0, 255)      # BlueGhost
-GRAY = (128, 128, 128)   # Điểm
-
-# Mê cung đơn giản
-maze_grid = [
-    ["#", "#", "#", "#", "#"],
-    ["#", ".", ".", ".", "#"],
-    ["#", ".", "#", ".", "#"],
-    ["#", ".", ".", "P", "#"],
-    ["#", "#", "#", "#", "#"]
-]
-
-# Hàm vẽ mê cung, Pac-Man và Ghosts
-def draw_game(screen: pygame.Surface, maze: Maze, pacman_pos: tuple, ghost_positions: dict):
-    screen.fill(WHITE)  # Nền trắng
-    
-    # Vẽ mê cung
-    for y, row in enumerate(maze._Maze__grid):
-        for x, cell in enumerate(row):
-            rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-            if cell == '#':
-                pygame.draw.rect(screen, BLACK, rect)  # Tường
-            elif cell == '.':
-                pygame.draw.circle(screen, GRAY, rect.center, 5)  # Điểm nhỏ
-    
-    # Vẽ Pac-Man
-    px, py = pacman_pos
-    pygame.draw.circle(screen, YELLOW, (px * CELL_SIZE + CELL_SIZE // 2, py * CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 2 - 2)
-    
-    # Vẽ Ghosts
-    for ghost_name, (gx, gy) in ghost_positions.items():
-        pygame.draw.circle(screen, BLUE, (gx * CELL_SIZE + CELL_SIZE // 2, gy * CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 2 - 2)
-    
-    pygame.display.flip()  # Cập nhật màn hình
+import copy
+import threading
+import pygame
 
 # Khởi tạo trò chơi
-maze = Maze(maze_grid)
-pacman = Pacman(maze, (3, 3))  # Vị trí ban đầu của Pac-Man
-ghosts = [BlueGhost(maze, (1, 2), "BlueGhost")]  # BlueGhost bắt đầu tại (1, 2)
-positions = {"BlueGhost": (1, 2)}
-game = GameManager(maze, pacman, ghosts, positions)
+maze_grid = [
+['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
+['#', '.', '#', '#', '.', '.', '.', '.', '#', '#', '#', '.', '#', '.', '.', '.', '#', '#', '.', '.', '.', '#', '#', '.', '.', '.', '#', '#', '#', '#'],
+['#', '.', '.', '.', '.', '.', '.', '#', '.', '.', '#', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#'],
+['#', '.', '.', '#', '#', '#', '.', '.', '.', '.', '.', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '.', '.', '#'],
+['#', '.', '*', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '#', '.', '.', '#', '.', '.', '.', '.', '#', ' ', ' ', '#', '*', '.', '#'],
+['#', '.', '.', '#', '#', '#', '#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '.', '.', '#'],
+['#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '#', '#'],
+['#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '.', '.', '.', '.', '#', '#', '#', '#', '.', '#', '#'],
+['#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '.', '.', '#'],
+['#', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+['#', '#', '#', '#', '.', '.', '#', '.', '#', '#', '#', '#', '#', ' ', '#', '#', ' ', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#'],
+['#', '.', '.', '#', '.', '.', '.', '.', '#', '#', '#', '#', '#', ' ', '#', '#', ' ', '#', '#', '#', '#', '#', '.', '#', '.', '.', '.', '.', '.', '#'],
+['#', '.', '#', '#', '.', '.', '#', '.', '.', '.', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', '#', '.', '#', '.', '.', '.', '.', '.', '#'],
+['#', '.', '.', '.', '.', '.', '#', '#', '#', '#', ' ', '#', '#', '#', 'G', 'G', '#', '#', '#', ' ', '#', '#', '.', '#', '.', '.', '.', '.', '.', '#'],
+['#', '#', '#', '#', '#', '#', '#', '.', '#', '#', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#'],
+['#', '.', '.', '.', '.', '.', '.', '.', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '.', '.', '.', '.', '.', '.', '.', '#'],
+['#', '#', '#', '.', '#', '#', '#', '.', '#', '#', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', '#', '#', '.', '#', '#', '#', '#', '#', '#', '#'],
+['#', '#', '#', '.', '#', '.', '.', '.', '#', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', ' ', '#', '#', '.', '#', '.', '#', '.', '.', '.', '#'],
+['#', '#', '.', '.', '#', '.', '#', '.', '#', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', '#', '.', '#', '.', '#', '#', '.', '.', '#'],
+['#', '.', '.', '#', '#', '.', '#', '.', '#', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', ' ', '#', '#', '.', '#', '.', '.', '.', '.', '.', '#'],
+['#', '#', '#', '#', '#', '#', '#', '.', '#', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', ' ', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#'],
+['#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '#'],
+['#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
+['#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '#', '#', '#', '.', '.', '.', '#', '#', '.', '.', '#'],
+['#', '.', '*', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '*', '#', '#'],
+['#', '.', '#', '#', '.', '#', '#', '#', '.', '#', '.', '#', '.', '#', '#', '.', '#', '#', '.', '.', '#', '#', '.', '#', '.', '.', '#', '#', '.', '#'],
+['#', '.', '.', '#', '.', '#', '#', '.', '.', '#', '.', '#', '#', '.', '#', '.', '#', '#', '.', '.', '#', '.', '.', '#', '.', '.', '#', '#', '.', '#'],
+['#', '.', '#', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '#', '.', '.', '#', '.', '#', '.', '.', '.', '#'],
+['#', '.', '.', '#', '#', '#', '#', '#', '#', '.', '.', '#', '#', '.', '#', '#', '.', '#', '.', '#', '#', '.', '.', '.', '.', '#', '#', '.', '.', '#'],
+['#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '#', '.', '.', '.', '#', '.', '.', '#', '#', '.', '.', '.', '.', '.', '#'],
+['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#']
+    ]
 
-# Bắt đầu trò chơi (khởi động các luồng ghost)
+
+pygame.init()
+ 
+# get the width and height of the screen
+infoObject = pygame.display.Info()
+screen_width, screen_height = infoObject.current_w, infoObject.current_h
+screen_height *= 0.9
+screen_width *= 0.9
+
+if screen_width > screen_height:
+    screen_width = int(screen_height)
+else:
+    screen_height = int(screen_width)
+
+color = 'blue'
+PI = 3.14159265358979323846
+#draw the Board
+rows = len(maze_grid)
+cols = len(maze_grid[0])
+cell_width = int(screen_width / cols)
+cell_height = int(screen_height / rows)
+
+# Restrist it to a square
+if cell_width > cell_height:
+    cell_size = cell_height
+else: 
+    cell_size = cell_width
+
+# Set the figures of the game
+maze = Maze(maze_grid)
+pacman = Pacman(maze, (14, 24), cell_size, cell_size)  # Vị trí ban đầu của Pac-Man
+ghosts = [BlueGhost(maze, (1, 2), "BlueGhost", (cell_size, cell_size)), PinkGhost(maze, (1, 3), "PinkGhost", (cell_size, cell_size))]  # BlueGhost bắt đầu tại (1, 2)
+positions = {"BlueGhost": (1, 2), "PinkGhost": (1, 3)}
+game = GameManager(maze, pacman, ghosts, positions, cell_size)
+pacman_closed = False
+pacman_state = "None"
+switch_interval = 0.2
+last_switch_time = time.time()
+# create the screen
+
+screen = pygame.display.set_mode((cell_size * cols, cell_size * rows))
+timer = pygame.time.Clock()
+ 
+fps = 800
+font = pygame.font.Font('freesansbold.ttf', 32)
+
+# ... (phần đầu giữ nguyên)
+
 game.start()
 
-# Vòng lặp chính
-clock = pygame.time.Clock()
 running = True
+while running:
+    timer.tick(fps)
+    screen.fill((0, 0, 0))
+    game.draw(pygame, screen)
 
-print("Game started. Use arrow keys to move Pac-Man, 'Q' to quit.")
-
-while running and game.is_running():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                game.move_pacman("up")
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                pacman_closed = False
+                pacman_state = "up"
+                game.pacman.set_direction("up")  # Chỉ thay đổi hướng
+                print(f"Pac-Man direction set to up, position: {game.get_pacman_pos()}")
             elif event.key == pygame.K_DOWN:
-                game.move_pacman("down")
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                pacman_closed = False
+                pacman_state = "down"
+                game.pacman.set_direction("down")
+                print(f"Pac-Man direction set to down, position: {game.get_pacman_pos()}")
             elif event.key == pygame.K_LEFT:
-                game.move_pacman("left")
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                pacman_closed = False
+                pacman_state = "left"
+                game.pacman.set_direction("left")
+                print(f"Pac-Man direction set to left, position: {game.get_pacman_pos()}")
             elif event.key == pygame.K_RIGHT:
-                game.move_pacman("right")
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                pacman_closed = False
+                pacman_state = "right"
+                game.pacman.set_direction("right")
+                print(f"Pac-Man direction set to right, position: {game.get_pacman_pos()}")
             elif event.key == pygame.K_q:
                 running = False
                 print("Quitting...")
 
-    # Vẽ trạng thái trò chơi
-    draw_game(screen, maze, game.get_pacman_pos(), game.positions)
+    # Switch Pac-Man sprite
+    current_time = time.time()
+    if current_time - last_switch_time > switch_interval:
+        if pacman_closed == False:
+            game.pacman.set_direction("None")
+            pacman_closed = True
+        else:
+            game.pacman.set_direction(pacman_state)
+            pacman_closed = False
+        last_switch_time = current_time
 
-    # Giới hạn tốc độ khung hình
-    clock.tick(30)  # 30 FPS
+    pygame.display.flip()
 
-# Dừng trò chơi
-game.stop()
 pygame.quit()
-print("Game stopped.")
+game.stop()
