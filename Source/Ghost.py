@@ -21,6 +21,7 @@ class Ghost:
         self.face_right = False
         self.appearance = None
         self.path: List[Tuple[int, int]] = []
+        self.first_move = False
         
     def load_image(self, pygame):
         # load the image of the ghost
@@ -55,7 +56,10 @@ class BlueGhost(Ghost):
     """Ghost that uses Breadth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.bfs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.bfs(pacman_pos) or []
         return None
     
     def load_image(self, pygame):
@@ -91,7 +95,10 @@ class PinkGhost(Ghost):
     """Ghost that uses Depth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.dfs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.dfs(pacman_pos) or []
         return None
     
     def load_image(self, pygame):
@@ -127,7 +134,10 @@ class OrangeGhost(Ghost):
     """Ghost that uses Uniform Cost Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.ucs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.ucs(pacman_pos) or []
         return None
     
     def load_image(self, pygame):
@@ -199,7 +209,10 @@ class RedGhost(Ghost):
     """Ghost that uses A* Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.a_star(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.a_star(pacman_pos) or []
         return None
 
     def load_image(self, pygame):
