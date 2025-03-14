@@ -32,6 +32,9 @@ class GameManager:
     def start(self):
         for t in self.threads:
             t.start()
+        for ghost in self.ghosts:
+            ghost.load_image(pygame)
+        self.pacman.load_image(pygame)
     
     def draw(self, pygame, screen):
         #draw the Board
@@ -49,12 +52,6 @@ class GameManager:
                     pygame.draw.circle(screen, (255, 255, 255), (int(x * self.cell_size + self.cell_size / 2), int(y * self.cell_size + self.cell_size / 2)), 5)
                 elif self.maze.is_gate(pos):
                     pygame.draw.rect(screen, (255, 255, 255), (x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size))
-                    
-        if self.load_images == False:
-            for ghost in self.ghosts:
-                ghost.load_image(pygame)
-            self.pacman.load_image(pygame)
-            self.load_images = True
 
         #draw the ghosts 
         for ghost in self.ghosts:
