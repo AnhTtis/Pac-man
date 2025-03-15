@@ -25,7 +25,6 @@ class GameManager:
             GhostThread(ghost, self.pacman, self.lock, self.running, self.positions, self.on_ghost_catch) 
             for ghost in ghosts
         ]
-        self.paused = False
 
     def on_ghost_catch(self, ghost_name: str, pos: Tuple[int, int]) -> None:
         print(f"Game Over: {ghost_name} caught Pac-Man at {pos}") 
