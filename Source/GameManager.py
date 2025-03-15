@@ -7,6 +7,7 @@ from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
 from GhostThread import GhostThread 
 from Pacman import Pacman
 import pygame 
+from record import Record
 
 class GameManager:
     def __init__(self, maze: Maze, pacman: 'Pacman', 
@@ -14,7 +15,7 @@ class GameManager:
         self.load_images = False
         self.maze = maze
         self.pacman = pacman  # Không deepcopy để tránh lỗi Lock
-        self.ghosts = copy.deepcopy(ghosts)
+        self.ghosts = ghosts
         self.positions = positions
         self.lock = threading.Lock()
         self.cell_size = cell_size
@@ -34,6 +35,7 @@ class GameManager:
             t.start()
         for ghost in self.ghosts:
             ghost.load_image(pygame)
+            ghost.start_time = time.time()
         self.pacman.load_image(pygame)
     
     def draw(self, pygame, screen):
@@ -45,7 +47,7 @@ class GameManager:
             for x in range(cols):
                 pos = (x, y)
                 if self.maze.is_wall(pos):
-                    pygame.draw.rect(screen, (0, 0, 255), (x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size))
+                    pygame.draw.rect(screen, (77, 121, 255), (x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size))
                 elif self.maze.is_dot(pos):
                     pygame.draw.circle(screen, (255, 255, 255), (int(x * self.cell_size + self.cell_size / 2), int(y * self.cell_size + self.cell_size / 2)), 3)
                 elif self.maze.is_big_dot(pos):

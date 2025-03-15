@@ -66,6 +66,12 @@ class Ghost:
         Args:
             pos: Tuple of (x, y) coordinates for the new position
         """
+        if pos[0] > self.pos[0]:
+            if not self.face_right:
+                self.face_right = True
+        elif self.face_right:
+            self.face_right = False
+            
         self.pos = pos
         
 class BlueGhost(Ghost):
@@ -84,6 +90,7 @@ class BlueGhost(Ghost):
     
 
     def bfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
+        self.n_expanded_nodes = 0
         """
         Perform Breadth-First Search to find a path to the target.
 

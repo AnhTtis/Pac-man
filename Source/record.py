@@ -1,24 +1,30 @@
 # search time, memory usage, and number of expanded nodes
 import time
 import tracemalloc
-from typing import Tuple
+from typing import Tuple, List
+from Ghost import Ghost
+import pygame
 
 class Record:
-    def __init__(self, name: str, pos: Tuple[int, int], size: Tuple[int, int], font_size: int):
-        self.name = name
-
-        self.start_time = time.time()
-        self.start_memory_usage = tracemalloc.start()
-
-        self.search_time = self.memory_usage = self.number_expanded_nodes = 0
-
-    def get_search_time(self):
-        self.search_time = time.time - self.start_time
-        return "Search time: " + str(self.search_time)
+    def __init__(self, pos: Tuple[int, int]):
+        self.pos = pos
     
-    def get_memory_usage(self):
-        self.memory_usage = tracemalloc.get_traced_memory() - self.start_memory_usage
-        return "Memory usage: " + str(self.memory_usage)
-    
-    def get_number_expanded_nodes(self):
-        return "Number of expanded nodes: " + str(self.number_expanded_nodes)
+    def draw(self, ghosts: List[Ghost], pixel_size: int, font):
+        x, y = self.pos
+        
+        for ghost in ghosts:
+            name_surface = font.render(f"Ghost: {ghost.name}", True, (255, 255, 0))
+            pygame.display.get_surface().blit(name_surface, (x, y))
+            y += pixel_size
+            memory_usage_mb = ghost.searched_memory / 10**6
+            info = (
+                f"Search Time: {ghost.searched_time:.6f} s\n"
+                f"Number of Expanded Nodes: {ghost.searched_nodes}\n"
+                f"Memory Usage: {memory_usage_mb:.6f} MB\n"
+            )
+            lines = info.split('\n')
+            for line in lines:
+                text_surface = font.render(line, True, (255, 255, 255))
+                pygame.display.get_surface().blit(text_surface, (x, y))
+                y += pixel_size
+            y += pixel_size
