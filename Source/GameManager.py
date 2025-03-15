@@ -6,7 +6,8 @@ from maze import Maze
 from ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
 from GhostThread import GhostThread 
 from pacman import Pacman
-import pygame 
+import pygame
+from record import Record
 
 class GameManager:
     def __init__(self, maze: Maze, pacman: 'Pacman', 
@@ -34,6 +35,7 @@ class GameManager:
             t.start()
         for ghost in self.ghosts:
             ghost.load_image(pygame)
+            ghost.start_time = time.time()
         self.pacman.load_image(pygame)
     
     def draw(self, pygame, screen):

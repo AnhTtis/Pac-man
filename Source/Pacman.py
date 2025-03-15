@@ -46,11 +46,11 @@ class Pacman:
     
     def load_image(self, pygame):
         self.appearance = [
-            pygame.transform.scale(pygame.image.load("pacman/pacman_close_mouth.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_top.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_bot.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_left.png"), (self.width, self.height)), 
-            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_right.png"), (self.width, self.height))
+            pygame.transform.scale(pygame.image.load("source/pacman/pacman_close_mouth.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("source/pacman/pacman_open_mouth_top.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("source/pacman/pacman_open_mouth_bot.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("source/pacman/pacman_open_mouth_left.png"), (self.width, self.height)), 
+            pygame.transform.scale(pygame.image.load("source/pacman/pacman_open_mouth_right.png"), (self.width, self.height))
         ]
         
     def display(self, screen, cell_size):

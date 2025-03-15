@@ -1,6 +1,7 @@
 # Mê cung đơn giản
 from maze import Maze
 import time
+import tracemalloc
 
 # file ghost.py in folder ghosts
 from ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
@@ -9,6 +10,10 @@ from pacman import Pacman, PacmanState
 import copy
 import threading
 import pygame
+from record import Record
+
+tracemalloc.start()
+start_memory_usage = tracemalloc.get_traced_memory()[0]
 
 # Khởi tạo trò chơi
 maze_grid = [
@@ -93,15 +98,17 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 timer = pygame.time.Clock()
  
 fps = 800
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('freesansbold.ttf', cell_size)
 
 game.start()
+record = Record((cell_size * (cols + 1), cell_size))
 
 running = True
 while running:
     timer.tick(fps)
     screen.fill((0, 0, 0))
     game.draw(pygame, screen)
+    record.draw(game.ghosts, cell_size, font, start_memory_usage)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
