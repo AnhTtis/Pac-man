@@ -26,10 +26,10 @@ class Ghost:
             ['#','1','1','#','#','#','3','3','4','#','#','#','#','3','#','#','1','#','#','3','#','#','1','#','4','#','3','2','1','#'],
             ['#','3','4','2','1','1','1','2','1','4','4','4','3','2','1','1','2','4','3','2','#','3','3','2','3','#','#','#','4','#'],
             ['#','3','3','#','#','#','#','1','#','#','3','#','4','#','3','#','4','#','#','2','4','1','1','#','#','#','2','2','2','#'],
-            ['#','4','2','#','2','#','3','3','4','3','2','#','4','#','3','#','3','#','#','4','#','#','4','2','3','#','3','1','1','#'],
+            ['#','4','2','#','2','4','3','3','4','3','2','#','4','#','3','#','3','#','#','4','#','#','4','2','3','#','3','1','1','#'],
             ['#','3','1','3','2','#','1','3','#','2','4','3','3','4','3','#','1','3','3','1','3','4','4','2','1','4','3','3','2','#'],
             ['#','#','#','#','1','#','#','3','#','3','4','#','#','1','3','#','2','#','2','#','2','#','3','#','#','2','2','#','3','#'],
-            ['#','3','2','#','4','1','1','4','#','#','1','#','#','4','#','#','4','#','#','#','2','#','3','#','2','3','4','#','1','#'],
+            ['#','3','2','1','4','1','1','4','#','#','1','#','#','4','#','#','4','#','#','#','2','#','3','#','2','3','4','#','1','#'],
             ['#','3','#','#','3','1','#','2','2','#','3','1','1','1','3','1','3','4','2','3','1','#','3','#','2','#','#','#','3','#'],
             ['#','1','4','2','3','2','#','1','4','#','3','#','#','#','1','4','#','#','#','2','1','1','4','#','1','2','4','4','3','#'],
             ['#','#','#','#','2','1','#','3','#','#','3','#','4','2','2','4','4','3','#','4','#','#','2','#','#','#','#','2','#','#'],
@@ -39,7 +39,7 @@ class Ghost:
             ['#','1','3','1','#','1','#','4','#','#','1','4','3','3','3','3','2','4','4','1','2','3','4','1','3','#','#','4','3','#'],
             ['#','3','3','4','#','1','#','2','4','3','4','#','#','#','#','#','#','#','2','3','#','#','#','3','3','2','4','3','2','#'],
             ['#','1','#','#','#','#','#','4','2','#','2','#','1','1','4','2','4','#','#','4','#','1','#','1','#','#','#','#','1','#'],
-            ['#','1','2','2','4','3','2','3','3','#','3','3','3','4','#','#','1','3','3','2','1','1','1','1','#','2','4','4','1','#'],
+            ['#','1','2','2','4','3','2','3','3','#','3','3','3','4','#','#','1','3','3','2','1','1','1','1','4','2','4','4','1','#'],
             ['#','4','2','#','#','#','#','1','#','#','#','#','#','4','4','#','1','#','4','4','#','#','3','#','#','#','#','3','#','#'],
             ['#','3','4','#','3','4','3','2','4','1','3','3','#','2','#','#','1','#','#','4','4','#','1','2','4','1','#','3','2','#'],
             ['#','2','1','4','3','#','#','#','1','4','4','2','1','4','3','4','2','1','3','2','3','2','1','#','3','4','1','4','4','#'],
@@ -47,7 +47,7 @@ class Ghost:
             ['#','2','#','1','3','#','#','#','2','#','1','#','2','4','#','2','#','#','3','1','#','1','3','#','3','#','#','#','4','#'],
             ['#','2','#','3','4','4','4','4','3','#','4','4','4','1','2','3','1','1','1','3','#','4','3','#','2','#','3','1','3','#'],
             ['#','2','#','#','#','#','#','#','#','#','4','#','#','2','#','#','4','#','3','1','#','3','4','3','1','#','#','4','3','#'],
-            ['#','2','1','2','1','4','1','1','1','1','2','4','#','3','2','#','2','2','2','2','3','4','#','#','1','3','4','3','3','#'],
+            ['#','2','1','2','1','4','1','1','1','1','2','4','1','3','2','4','2','2','2','2','3','4','#','#','1','3','4','3','3','#'],
             ['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#']]
         self.pos = start_pos
         self.name = name
@@ -149,9 +149,9 @@ class BlueGhost(Ghost):
         
             if pos == target:
                 end_time = time.time()
-                self.searched_time += end_time - start_time
-                self.searched_nodes += expanded_nodes
-                self.searched_memory += max_memory
+                self.searched_time = end_time - start_time
+                self.searched_nodes = expanded_nodes
+                self.searched_memory = max_memory
                 return path
             
             neighbors = self.maze.get_neigh(pos)
@@ -160,9 +160,9 @@ class BlueGhost(Ghost):
                     visited.add(next_pos)
                     queue.append((next_pos, path + [next_pos]))
         end_time = time.time()
-        self.searched_time += end_time - start_time
-        self.searched_nodes += expanded_nodes
-        self.searched_memory += max_memory
+        self.searched_time = end_time - start_time
+        self.searched_nodes = expanded_nodes
+        self.searched_memory = max_memory
         return None
 
 class PinkGhost(Ghost):
@@ -207,9 +207,9 @@ class PinkGhost(Ghost):
             
             if pos == target:
                 end_time = time.time()
-                self.searched_time += end_time - start_time
-                self.searched_nodes += expanded_nodes
-                self.searched_memory += max_memory
+                self.searched_time = end_time - start_time
+                self.searched_nodes = expanded_nodes
+                self.searched_memory = max_memory
                 return path
             
             neighbors = self.maze.get_neigh(pos)
@@ -218,9 +218,9 @@ class PinkGhost(Ghost):
                     visited.add(next_pos)
                     stack.append((next_pos, path + [next_pos]))
         end_time = time.time()
-        self.searched_time += end_time - start_time
-        self.searched_nodes += expanded_nodes
-        self.searched_memory += max
+        self.searched_time = end_time - start_time
+        self.searched_nodes = expanded_nodes
+        self.searched_memory = max_memory
         return None
 
 class OrangeGhost(Ghost):
@@ -268,9 +268,9 @@ class OrangeGhost(Ghost):
             
             if node == target:
                 end_time = time.time()
-                self.searched_time += end_time - start_time
-                self.searched_nodes += expanded_nodes
-                self.searched_memory += max_memory
+                self.searched_time = end_time - start_time
+                self.searched_nodes = expanded_nodes
+                self.searched_memory = max_memory
                 return path
             
             explored.add(node)
@@ -291,9 +291,9 @@ class OrangeGhost(Ghost):
                     if not in_frontier:
                         heapq.heappush(frontier, (total_cost, neighbor, path + [neighbor]))
         end_time = time.time()
-        self.searched_time += end_time - start_time
-        self.searched_nodes += expanded_nodes
-        self.searched_memory += max_memory
+        self.searched_time = end_time - start_time
+        self.searched_nodes = expanded_nodes
+        self.searched_memory = max_memory
         return None
     
     def get_cost(self, current_pos: Tuple[int, int], next_pos: Tuple[int, int]) -> float:
@@ -361,9 +361,9 @@ class RedGhost(Ghost):
             
             if current == target:
                 end_time = time.time()
-                self.searched_time += end_time - start_time
-                self.searched_nodes += expanded_nodes
-                self.searched_memory += max_memory
+                self.searched_time = end_time - start_time
+                self.searched_nodes = expanded_nodes
+                self.searched_memory = max_memory
                 return self.reconstruct_path(cameFrom, current)
             
             for neighbor in self.maze.get_neigh(current):
@@ -375,9 +375,9 @@ class RedGhost(Ghost):
                     if neighbor not in [n for _, n in openSet]:
                         heapq.heappush(openSet, (fScore[neighbor], neighbor))
         end_time = time.time()
-        self.searched_time += end_time - start_time
-        self.searched_nodes += expanded_nodes
-        self.searched_memory += max_memory
+        self.searched_time = end_time - start_time
+        self.searched_nodes = expanded_nodes
+        self.searched_memory = max_memory
         return None
     
     def reconstruct_path(self, cameFrom: Dict[Tuple[int, int], Tuple[int, int]], 
