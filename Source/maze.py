@@ -48,3 +48,7 @@ class Maze:
     def is_pacman(self, pos):
         x, y = pos
         return self.__grid[y][x] == 'P'
+    def set_element(self, pos, element):
+        x, y = pos
+        self.__grid[y][x] = element
+        
