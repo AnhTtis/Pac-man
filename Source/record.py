@@ -18,9 +18,9 @@ class Record:
             y += pixel_size
             memory_usage_mb = ghost.searched_memory / 10**6
             info = (
-                f"Search Time: {ghost.searched_time:.6f} s\n"
-                f"Number of Expanded Nodes: {ghost.searched_nodes}\n"
-                f"Memory Usage: {memory_usage_mb:.6f} MB\n"
+                f"Search time: {ghost.searched_time:.6f} s\n"
+                f"Number of expanded nodes: {ghost.searched_nodes}\n"
+                f"Memory usage: {memory_usage_mb:.6f} MB\n"
             )
             lines = info.split('\n')
             for line in lines:

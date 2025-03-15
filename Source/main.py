@@ -75,14 +75,24 @@ else:
 maze = Maze(maze_grid)
 pacman = Pacman(maze, (15, 15), cell_size, cell_size)  # Vị trí ban đầu của Pac-Man
 
+# Test case 1
+# positions = {"BlueGhost": (1, 1), "PinkGhost": (1, 1), "OrangeGhost": (1, 1), "RedGhost": (1, 1)}
+# Test case 2
+# positions = {"BlueGhost": (cols - 2, 1), "PinkGhost": (cols - 2, 1), "OrangeGhost": (cols - 2, 1), "RedGhost": (cols - 2, 1)}
+# Test case 3
+# positions = {"BlueGhost": (1, rows - 2), "PinkGhost": (1, rows - 2), "OrangeGhost": (1, rows - 2), "RedGhost": (1, rows - 2)}
+# Test case 4
+# positions = {"BlueGhost": (cols - 2, rows - 2), "PinkGhost": (cols - 2, rows - 2), "OrangeGhost": (cols - 2, rows - 2), "RedGhost": (cols - 2, rows - 2)}
+
+positions = {"BlueGhost": (1, 1), "PinkGhost": (28, 1), "OrangeGhost": (1, 29), "RedGhost": (28, 29)}
+
 ghosts = [
-    BlueGhost(maze, (1, 1), "BlueGhost", (cell_size, cell_size)), 
-    PinkGhost(maze, (28, 1), "PinkGhost", (cell_size, cell_size)),
-    OrangeGhost(maze, (1, 29), "OrangeGhost", (cell_size, cell_size)), 
-    RedGhost(maze, (28, 29), "RedGhost",(cell_size, cell_size))
+    BlueGhost(maze, positions['BlueGhost'], "BlueGhost", (cell_size, cell_size)), 
+    PinkGhost(maze, positions['PinkGhost'], "PinkGhost", (cell_size, cell_size)),
+    OrangeGhost(maze, positions['OrangeGhost'], "OrangeGhost", (cell_size, cell_size)), 
+    RedGhost(maze, positions['RedGhost'], "RedGhost", (cell_size, cell_size))
 ]  # BlueGhost bắt đầu tại (1, 2)
 
-positions = {"BlueGhost": (1, 1), "PinkGhost": (28, 1), "OrangeGhost": (1, 29), "RedGhost": (28, 29)}  # Vị trí ban đầu của các Ghost
 game = GameManager(maze, pacman, ghosts, positions, cell_size)
 pacman_closed = False
 pacman_state = PacmanState.CLOSE
