@@ -26,7 +26,6 @@ class GhostThread(threading.Thread):
     def update_path(self) -> None:
         # last_pacman_pos = None
         #print ghost's statics
-        self.ghost.show_search_statistics()
         while self.running.is_set():
             with self.lock:
                 self.ghost.maze.set_element(self.last_pos, '#')
@@ -37,6 +36,7 @@ class GhostThread(threading.Thread):
     def run(self) -> None:
         while self.running.is_set():
             with self.lock:
+                self.ghost.show_search_statistics()
                 if self.ghost.path and len(self.ghost.path) > 1:
                     next_pos = self.ghost.path[1]
                     if next_pos not in self.positions.values():

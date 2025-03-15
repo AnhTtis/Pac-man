@@ -55,17 +55,7 @@ class Pacman:
         
     def display(self, screen, cell_size):
         x, y = self.pos
-        if self.direction == PacmanState.UP:
-            state = 1
-        elif self.direction == PacmanState.DOWN:
-            state = 2
-        elif self.direction == PacmanState.LEFT:
-            state = 3
-        elif self.direction == PacmanState.RIGHT:
-            state = 4
-        else:
-            state = 0
-        screen.blit(self.appearance[state], (x * cell_size, y * cell_size))
+        screen.blit(self.appearance[self.direction.value], (x * cell_size, y * cell_size))
     
     def __str__(self):
         return f"Pacman: x={self.x}, y={self.y}, score={self.score}"
