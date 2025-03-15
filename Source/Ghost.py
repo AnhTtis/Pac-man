@@ -2,11 +2,11 @@ from collections import deque
 from typing import List, Tuple, Dict, Set, Optional
 import heapq
 from maze import Maze
-from pygame import transform, image
+import time
 
 class Ghost:
     """Base class for Pac-Man ghost AI behaviors."""
-    def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int], color):
+    def __init__(self, maze: 'Maze', start_pos: Tuple[int, int], name: str, size:int):
         """
         Initialize a ghost with its maze, starting position, and name.
 
@@ -21,8 +21,15 @@ class Ghost:
         self.size = size
         self.face_right = False
         self.appearance = None
-        self.color = color
         self.path: List[Tuple[int, int]] = []
+        self.first_move = False
+        self.n_expanded_nodes = 0
+        self.start_time = 0
+        self.search_time = 0
+        
+    def load_image(self, pygame):
+        # load the image of the ghost
+        pass
 
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
@@ -38,7 +45,7 @@ class Ghost:
     
     def display(self, screen):
         if self.appearance:
-            screen.blit(self.appearance[self.face_right], self.pos)
+            screen.blit(self.appearance[self.face_right], (self.pos[0] * self.size[0], self.pos[1] * self.size[1]))
 
     def set_pos(self, pos: Tuple[int, int]) -> None:
         """
@@ -47,21 +54,31 @@ class Ghost:
         Args:
             pos: Tuple of (x, y) coordinates for the new position
         """
+        if pos[0] > self.pos[0]:
+            if not self.face_right:
+                self.face_right = True
+        elif self.face_right:
+            self.face_right = False
+            
         self.pos = pos
         
-class BlueGhost(Ghost): #BFS
-    def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
-        super().__init__(name, maze, start_pos, size, (0, 0, 255))
-        self.appearance = [transform.scale(image.load("blue.png"), self.size)]
-        self.appearance.append(transform.flip(self.appearance[0], True, False))
-    
+class BlueGhost(Ghost):
     """Ghost that uses Breadth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.bfs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.bfs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [pygame.transform.scale(pygame.image.load("source/ghosts/blue.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
+    
 
     def bfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
+        self.n_expanded_nodes = 0
         """
         Perform Breadth-First Search to find a path to the target.
 
@@ -75,9 +92,11 @@ class BlueGhost(Ghost): #BFS
         visited: Set[Tuple[int, int]] = set([self.pos])
         while queue:
             pos, path = queue.popleft()
+            self.search_time = time.time() - self.start_time
             if pos == target:
                 return path
             
+            self.n_expanded_nodes += 1
             neighbors = self.maze.get_neigh(pos)
             for next_pos in neighbors:
                 if next_pos not in visited:
@@ -86,16 +105,18 @@ class BlueGhost(Ghost): #BFS
         return None
 
 class PinkGhost(Ghost):
-    def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
-        super().__init__(name, maze, start_pos, size, (255, 105, 180))
-        self.appearance = [transform.scale(image.load("pink.png"), self.size)]
-        self.appearance.append(transform.flip(self.appearance[0], True, False))
-
     """Ghost that uses Depth-First Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.dfs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.dfs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [pygame.transform.scale(pygame.image.load("source/ghosts/pink.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
 
     def dfs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -107,13 +128,17 @@ class PinkGhost(Ghost):
         Returns:
             List of (x, y) tuples representing the path, or None if no path found
         """
+        self.n_expanded_nodes = 0
+
         stack: List[Tuple[Tuple[int, int], List[Tuple[int, int]]]] = [(self.pos, [self.pos])]
         visited: Set[Tuple[int, int]] = set([self.pos])
         
         while stack:
             pos, path = stack.pop()
+            self.search_time = time.time() - self.start_time
             if pos == target:
                 return path
+            self.n_expanded_nodes += 1
             
             neighbors = self.maze.get_neigh(pos)
             for next_pos in neighbors:
@@ -123,16 +148,18 @@ class PinkGhost(Ghost):
         return None
 
 class OrangeGhost(Ghost):
-    def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
-        super().__init__(name, maze, start_pos, size, (255, 255, 0))
-        self.appearance = [transform.scale(image.load("orange.png"), self.size)]
-        self.appearance.append(transform.flip(self.appearance[0], True, False))
-
     """Ghost that uses Uniform Cost Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.ucs(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.ucs(pacman_pos) or []
         return None
+    
+    def load_image(self, pygame):
+        self.appearance = [pygame.transform.scale(pygame.image.load("source/ghosts/yellow.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
 
     def ucs(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -144,6 +171,8 @@ class OrangeGhost(Ghost):
         Returns:
             List of (x, y) tuples representing the path, or None if no path found
         """
+        self.n_expanded_nodes = 0
+        
         root = self.pos
         cost = 0
         frontier: List[Tuple[float, Tuple[int, int], List[Tuple[int, int]]]] = [(cost, root, [root])]
@@ -152,6 +181,8 @@ class OrangeGhost(Ghost):
         
         while frontier:
             cost, node, path = heapq.heappop(frontier)
+            self.n_expanded_nodes += 1
+            self.search_time = time.time() - self.start_time
             if node == target:
                 return path
             
@@ -196,16 +227,18 @@ class OrangeGhost(Ghost):
             return 1  # Default cost for other positions
 
 class RedGhost(Ghost):
-    def __init__(self, name: str, maze: 'Maze', start_pos: Tuple[int, int], size: Tuple[int, int]):
-        super().__init__(name, maze, start_pos, size, (255, 0, 0))
-        self.appearance = [transform.scale(image.load("red.png"), self.size)]
-        self.appearance.append(transform.flip(self.appearance[0], True, False))
-
     """Ghost that uses A* Search to chase Pac-Man."""
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         if not self.path or self.path[-1] != pacman_pos:
-            self.path = self.a_star(pacman_pos) or []
+            if not self.first_move:
+                self.first_move = True
+            else:
+                self.path = self.a_star(pacman_pos) or []
         return None
+
+    def load_image(self, pygame):
+        self.appearance = [pygame.transform.scale(pygame.image.load("source/ghosts/red.png"), self.size)]
+        self.appearance.append(pygame.transform.flip(self.appearance[0], True, False))
     
     def a_star(self, target: Tuple[int, int]) -> Optional[List[Tuple[int, int]]]:
         """
@@ -217,6 +250,8 @@ class RedGhost(Ghost):
         Returns:
             List of (x, y) tuples representing the path, or None if no path found
         """
+        self.n_expanded_nodes = 0
+
         start = self.pos
         openSet: List[Tuple[float, Tuple[int, int]]] = [(self.get_heuristic(start, target), start)]
         heapq.heapify(openSet)
@@ -226,6 +261,8 @@ class RedGhost(Ghost):
         
         while openSet:
             current_f, current = heapq.heappop(openSet)
+            self.n_expanded_nodes += 1
+            self.search_time = time.time() - self.start_time
             if current == target:
                 return self.reconstruct_path(cameFrom, current)
             

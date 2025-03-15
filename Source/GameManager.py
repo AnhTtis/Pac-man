@@ -6,11 +6,13 @@ from maze import Maze
 from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost
 from GhostThread import GhostThread 
 from Pacman import Pacman
-import pygame 
+import pygame
+from record import Record
 
 class GameManager:
     def __init__(self, maze: Maze, pacman: 'Pacman', 
                  ghosts: List[Ghost], positions: Dict[str, Tuple[int, int]], cell_size: int):
+        self.load_images = False
         self.maze = maze
         self.pacman = pacman  # Không deepcopy để tránh lỗi Lock
         self.ghosts = copy.deepcopy(ghosts)
@@ -31,6 +33,10 @@ class GameManager:
     def start(self):
         for t in self.threads:
             t.start()
+        for ghost in self.ghosts:
+            ghost.load_image(pygame)
+            ghost.start_time = time.time()
+        self.pacman.load_image(pygame)
     
     def draw(self, pygame, screen):
         #draw the Board
