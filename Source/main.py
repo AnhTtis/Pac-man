@@ -134,7 +134,7 @@ while running:
     current_time = time.time()
     if current_time - last_switch_time > switch_interval:
         if pacman_closed == False:
-            game.pacman.set_direction("None")
+            game.pacman.set_direction(PacmanState.CLOSE)
             pacman_closed = True
         else:
             game.pacman.set_direction(pacman_state)

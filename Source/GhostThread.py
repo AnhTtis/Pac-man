@@ -24,6 +24,8 @@ class GhostThread(threading.Thread):
 
     def update_path(self) -> None:
         # last_pacman_pos = None
+        #print ghost's statics
+        self.ghost.show_search_statistics()
         while self.running.is_set():
             with self.lock:
         #         current_pacman_pos = self.pacman.pos
