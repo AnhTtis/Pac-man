@@ -109,6 +109,8 @@ font = pygame.font.Font('freesansbold.ttf', cell_size)
 game.start()
 record = Record((cell_size * (cols + 1), cell_size))
 
+
+
 running = True
 while running:
     timer.tick(fps)
@@ -116,57 +118,52 @@ while running:
     game.draw(pygame, screen)
     record.draw(game.ghosts, cell_size, font)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                pacman_closed = False
-                pacman_state = PacmanState.UP
-                game.pacman.set_direction(pacman_state)
-                game.move_pacman()
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
-            elif event.key == pygame.K_DOWN:
-                pacman_closed = False
-                pacman_state = PacmanState.DOWN
-                game.pacman.set_direction(pacman_state)
-                game.move_pacman()
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
-            elif event.key == pygame.K_LEFT:
-                pacman_closed = False
-                pacman_state = PacmanState.LEFT
-                game.pacman.set_direction(pacman_state)
-                game.move_pacman()
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
-            elif event.key == pygame.K_RIGHT:
-                pacman_closed = False
-                pacman_state = PacmanState.RIGHT
-                game.pacman.set_direction(pacman_state)
-                game.move_pacman()
-                print(f"Pac-Man moved to {game.get_pacman_pos()}")
-            elif event.key == pygame.K_q:
+    if not game.is_paused():
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 running = False
-                print("Quitting...")
-    # Switch Pac-Man sprite
-    current_time = time.time()
-    if current_time - last_switch_time > switch_interval:
-        if pacman_closed == False:
-            game.pacman.set_direction(PacmanState.CLOSE)
-            pacman_closed = True
-        else:
-            game.pacman.set_direction(pacman_state)
-            pacman_closed = False
-        last_switch_time = current_time
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    pacman_closed = False
+                    pacman_state = PacmanState.UP
+                    game.pacman.set_direction(pacman_state)
+                    game.move_pacman()
+                    print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                elif event.key == pygame.K_DOWN:
+                    pacman_closed = False
+                    pacman_state = PacmanState.DOWN
+                    game.pacman.set_direction(pacman_state)
+                    game.move_pacman()
+                    print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                elif event.key == pygame.K_LEFT:
+                    pacman_closed = False
+                    pacman_state = PacmanState.LEFT
+                    game.pacman.set_direction(pacman_state)
+                    game.move_pacman()
+                    print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                elif event.key == pygame.K_RIGHT:
+                    pacman_closed = False
+                    pacman_state = PacmanState.RIGHT
+                    game.pacman.set_direction(pacman_state)
+                    game.move_pacman()
+                    print(f"Pac-Man moved to {game.get_pacman_pos()}")
+                elif event.key == pygame.K_q:
+                    running = False
+                    print("Quitting...")
+        # Switch Pac-Man sprite
+        current_time = time.time()
+        if current_time - last_switch_time > switch_interval:
+            if pacman_closed == False:
+                game.pacman.set_direction(PacmanState.CLOSE)
+                pacman_closed = True
+            else:
+                game.pacman.set_direction(pacman_state)
+                pacman_closed = False
+            last_switch_time = current_time
 
  
     pygame.display.flip()
  
 pygame.quit()
-
-# Bắt đầu trò chơi (khởi động các luồng ghost)
-
-#while running and game.is_running():
-    # for event in pygame.event.get():
-    #     
 
 game.stop()

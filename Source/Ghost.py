@@ -59,7 +59,11 @@ class Ghost:
         self.searched_nodes = 0
         self.searched_time = 0.0
         self.searched_memory = 0.0
-        
+        self.paused = False
+            
+    def is_paused(self):
+        return self.paused
+    
     def show_search_statistics(self):
         """
         Display the search performance statistics.
@@ -98,12 +102,12 @@ class Ghost:
         Args:
             pos: Tuple of (x, y) coordinates for the new position
         """
-        if pos[0] > self.pos[0]:
-            if not self.face_right:
+        
+        if pos[0] > self.pos[0] and not self.face_right:
                 self.face_right = True
-        elif self.face_right:
+        elif pos[0] != self.pos[0] and self.face_right:
             self.face_right = False
-            
+        
         self.pos = pos
         
 class BlueGhost(Ghost):
