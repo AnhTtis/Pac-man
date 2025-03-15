@@ -103,7 +103,7 @@ class Ghost:
                 self.face_right = True
         elif self.face_right:
             self.face_right = False
-            
+        
         self.pos = pos
         
 class BlueGhost(Ghost):
