@@ -3,9 +3,9 @@ from maze import Maze
 import time
 
 # file ghost.py in folder ghosts
-from ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
+from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
 from GameManager import GameManager
-from pacman import Pacman, PacmanState
+from Pacman import Pacman, PacmanState
 import copy
 import threading
 import pygame
