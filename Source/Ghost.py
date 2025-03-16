@@ -4,6 +4,7 @@ import heapq
 from maze import Maze
 import time
 import sys
+from logger import ExperimentLogger
 
 class Ghost:
     """Base class for Pac-Man ghost AI behaviors."""
@@ -60,6 +61,7 @@ class Ghost:
         self.searched_time = 0.0
         self.searched_memory = 0.0
         self.paused = False
+        self.logger = ExperimentLogger()
             
     def is_paused(self):
         return self.paused
@@ -114,6 +116,15 @@ class BlueGhost(Ghost):
     """Ghost that uses Breadth-First Search to chase Pac-Man."""
     
     def find_path(self, pacman_pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        self.logger.log(
+            ghost_name=self.name,
+            algorithm="BFS",
+            search_time=self.searched_time,
+            expanded_nodes=self.searched_nodes,
+            memory_usage=self.searched_memory,
+            ghost_pos=self.pos,
+            pacman_pos=pacman_pos
+        )
         if not self.path or self.path[-1] != pacman_pos:
             if not self.first_move:
                 self.first_move = True
