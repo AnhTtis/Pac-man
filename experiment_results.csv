@@ -1,4 +1,4 @@
-Test_Case,Ghost_Name,Algorithm,Search_Time(s),Expanded_Nodes,Memory_Usage(MB),Ghost_Pos_X,Ghost_Pos_Y,Pacman_Pos_X,Pacman_Pos_Y
+Ghost_Name,Algorithm,Search_Time(s),Expanded_Nodes,Memory_Usage(MB),Ghost_Pos_X,Ghost_Pos_Y,Pacman_Pos_X,Pacman_Pos_Y
 BlueGhost,BFS,0.016279,231,0.026080,1,1,15,15
 BlueGhost,BFS,0.011961,220,0.024896,28,1,15,15
 BlueGhost,BFS,0.021451,286,0.029488,1,29,15,15
@@ -50,3 +50,4 @@ RedGhost,A*,0.004846,86,0.034424,15,15,28,29
 RedGhost,A*,0.001383,37,0.018640,15,15,1,1
 RedGhost,A*,0.004889,79,0.033640,15,15,28,1
 RedGhost,A*,0.001070,30,0.016280,15,15,1,29
+****************************************************************************************************
