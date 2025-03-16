@@ -19,17 +19,14 @@ class Pacman:
         self.lock = threading.Lock()
         self.appearance = None
         self.direction = PacmanState.CLOSE
-        self.paused = False
-            
-    def is_paused(self):
-        return self.paused
+        # self.paused = False
         
     def set_direction(self, direction: PacmanState):
         self.direction = direction
 
     def move(self): 
-        if (self.paused):
-            return   
+        # if (self.paused):
+        #     return   
         if self.direction == PacmanState.UP and not self.maze.is_wall((self.pos[0], self.pos[1] - 1)):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0], self.pos[1] - 1)

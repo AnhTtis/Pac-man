@@ -119,13 +119,13 @@ while running:
     game.draw(pygame, screen)
     record.draw(game.ghosts, cell_size, font)
 
-    if pacman.paused:
+    if not game.is_running():
         game_over_announce.draw(screen)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
+        elif game.is_running() and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 pacman_closed = False
                 pacman_state = PacmanState.UP

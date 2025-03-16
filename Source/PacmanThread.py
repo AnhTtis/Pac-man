@@ -12,8 +12,8 @@ class PacmanThread(threading.Thread):
 
     def run(self) -> None:
         while self.running.is_set():
-            if not self.pacman.paused:
-                with self.lock:
-                    if self.pacman.direction != "None":
-                        self.pacman.move()
+            # if not self.pacman.paused:
+            with self.lock:
+                if self.pacman.direction != "None":
+                    self.pacman.move()
             time.sleep(self.move_interval)

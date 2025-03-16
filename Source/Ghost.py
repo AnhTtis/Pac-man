@@ -59,10 +59,7 @@ class Ghost:
         self.searched_nodes = 0
         self.searched_time = 0.0
         self.searched_memory = 0.0
-        self.paused = False
-            
-    def is_paused(self):
-        return self.paused
+        # self.paused = False
     
     def show_search_statistics(self):
         """
