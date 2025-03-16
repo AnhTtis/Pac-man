@@ -24,7 +24,6 @@ class ExperimentLogger:
             'Pacman_Pos_X', 
             'Pacman_Pos_Y'
         ]
-        # Kiểm tra và tạo file với header nếu chưa tồn tại
         if not os.path.isfile(self.filename):
             with open(self.filename, 'w', newline='') as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
@@ -67,17 +66,3 @@ class ExperimentLogger:
         with open(self.filename, 'a', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
             writer.writerow(data)
-
-# # Ví dụ sử dụng (có thể xóa khi tích hợp vào code chính)
-# if __name__ == "__main__":
-#     logger = ExperimentLogger("test_results.csv")
-#     logger.log(
-#         test_case=1,
-#         ghost_name="BlueGhost",
-#         algorithm="BFS",
-#         search_time=0.002345,
-#         expanded_nodes=150,
-#         memory_usage=123456,
-#         ghost_pos=(1, 2),
-#         pacman_pos=(14, 24)
-#     )
