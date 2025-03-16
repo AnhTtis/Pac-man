@@ -1,4 +1,8 @@
 # Ignore virtual environment directory
 venv/
+<<<<<<< HEAD
 # Ignore pycache directory
+=======
+
+>>>>>>> 39b072853459cadd4a36d6050b8862c46e2afc7f
 Source/__pycache__/

@@ -1,6 +1,7 @@
 # Mê cung đơn giản
 from maze import Maze
 import time
+import tracemalloc
 
 # file ghost.py in folder ghosts
 from Ghost import Ghost, BlueGhost, OrangeGhost, PinkGhost, RedGhost
@@ -9,6 +10,8 @@ from Pacman import Pacman, PacmanState
 import copy
 import threading
 import pygame
+from record import Record
+from GameOver import GameOver
 
 # Khởi tạo trò chơi
 maze_grid = [
@@ -20,10 +23,10 @@ maze_grid = [
     ['#', '.', '.', '#', '#', '#', '.', '.', '.', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '.', '#', '.', '.', '.', '#'],
     ['#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '#', '#', '#', '.', '#'],
     ['#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '.', '#', '.', '#', '.', '#', '.', '#', '#', '.', '.', '.', '.', '#', '#', '#', '.', '.', '.', '#'],
-    ['#', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', '#', '.', '#', '.', '#', '.', '#', '#', '.', '#', '#', '.', '.', '.', '#', '.', '.', '.', '#'],
+    ['#', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '#', '.', '#', '.', '#', '.', '#', '#', '.', '#', '#', '.', '.', '.', '#', '.', '.', '.', '#'],
     ['#', '.', '.', '.', '.', '#', '.', '.', '#', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
     ['#', '#', '#', '#', '.', '#', '#', '.', '#', '.', '.', '#', '#', '.', '.', '#', '.', '#', '.', '#', '.', '#', '.', '#', '#', '.', '.', '#', '.', '#'],
-    ['#', '.', '.', '#', '.', '.', '.', '.', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '#', '.', '#', '.', '#', '.', '.', '.', '#', '.', '#'],
+    ['#', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '#', '#', '.', '#', '.', '#', '.', '.', '.', '#', '.', '#'],
     ['#', '.', '#', '#', '.', '.', '#', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '#', '.', '#', '#', '#', '.', '#'],
     ['#', '.', '.', '.', '.', '.', '#', '.', '.', '#', '.', '#', '#', '#', '.', '.', '#', '#', '#', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '#'],
     ['#', '#', '#', '#', '.', '.', '#', '.', '#', '#', '.', '#', '.', '.', '.', '.', '.', '.', '#', '.', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
@@ -33,7 +36,7 @@ maze_grid = [
     ['#', '.', '.', '.', '#', '.', '#', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '#'],
     ['#', '.', '.', '.', '#', '.', '#', '.', '.', '.', '.', '#', '#', '#', '#', '#', '#', '#', '.', '.', '#', '#', '#', '.', '.', '.', '.', '.', '.', '#'],
     ['#', '.', '#', '#', '#', '#', '#', '.', '.', '#', '.', '#', '.', '.', '.', '.', '.', '#', '#', '.', '#', '.', '#', '.', '#', '#', '#', '#', '.', '#'],
-    ['#', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '#'],
+    ['#', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
     ['#', '.', '.', '#', '#', '#', '#', '.', '#', '#', '#', '#', '#', '.', '.', '#', '.', '#', '.', '.', '#', '#', '.', '#', '#', '#', '#', '.', '#', '#'],
     ['#', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '#', '#', '.', '#', '#', '.', '.', '#', '.', '.', '.', '.', '#', '.', '.', '#'],
     ['#', '.', '*', '.', '.', '#', '#', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '*', '.', '#'],
@@ -41,10 +44,9 @@ maze_grid = [
     ['#', '.', '#', '.', '.', '#', '#', '#', '.', '#', '.', '#', '.', '.', '#', '.', '#', '#', '.', '.', '#', '.', '.', '#', '.', '#', '#', '#', '.', '#'],
     ['#', '.', '#', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '#', '.', '#', '.', '.', '.', '#'],
     ['#', '.', '#', '#', '#', '#', '#', '#', '#', '#', '.', '#', '#', '.', '#', '#', '.', '#', '.', '.', '#', '.', '.', '.', '.', '#', '#', '.', '.', '#'],
-    ['#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '.', '#', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '#'],
+    ['#', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '#'],
     ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#']
 ]
-
 
 pygame.init()
  
@@ -74,14 +76,24 @@ else:
 maze = Maze(maze_grid)
 pacman = Pacman(maze, (15, 15), cell_size, cell_size)  # Vị trí ban đầu của Pac-Man
 
+# Test case 1
+# positions = {"BlueGhost": (1, 1), "PinkGhost": (1, 1), "OrangeGhost": (1, 1), "RedGhost": (1, 1)}
+# Test case 2
+# positions = {"BlueGhost": (cols - 2, 1), "PinkGhost": (cols - 2, 1), "OrangeGhost": (cols - 2, 1), "RedGhost": (cols - 2, 1)}
+# Test case 3
+# positions = {"BlueGhost": (1, rows - 2), "PinkGhost": (1, rows - 2), "OrangeGhost": (1, rows - 2), "RedGhost": (1, rows - 2)}
+# Test case 4
+# positions = {"BlueGhost": (cols - 2, rows - 2), "PinkGhost": (cols - 2, rows - 2), "OrangeGhost": (cols - 2, rows - 2), "RedGhost": (cols - 2, rows - 2)}
+
+positions = {"BlueGhost": (1, 1), "PinkGhost": (28, 1), "OrangeGhost": (1, 29), "RedGhost": (28, 29)}
+
 ghosts = [
-    BlueGhost(maze, (1, 1), "BlueGhost", (cell_size, cell_size)), 
-    PinkGhost(maze, (28, 1), "PinkGhost", (cell_size, cell_size)),
-    OrangeGhost(maze, (1, 29), "OrangeGhost", (cell_size, cell_size)), 
-    RedGhost(maze, (28, 29), "RedGhost",(cell_size, cell_size))
+    BlueGhost(maze, positions['BlueGhost'], "BlueGhost", (cell_size, cell_size)), 
+    PinkGhost(maze, positions['PinkGhost'], "PinkGhost", (cell_size, cell_size)),
+    OrangeGhost(maze, positions['OrangeGhost'], "OrangeGhost", (cell_size, cell_size)), 
+    RedGhost(maze, positions['RedGhost'], "RedGhost", (cell_size, cell_size))
 ]  # BlueGhost bắt đầu tại (1, 2)
 
-positions = {"BlueGhost": (1, 1), "PinkGhost": (28, 1), "OrangeGhost": (1, 29), "RedGhost": (28, 29)}  # Vị trí ban đầu của các Ghost
 game = GameManager(maze, pacman, ghosts, positions, cell_size)
 pacman_closed = False
 pacman_state = PacmanState.CLOSE
@@ -93,15 +105,22 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 timer = pygame.time.Clock()
  
 fps = 800
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('freesansbold.ttf', cell_size)
 
 game.start()
+record = Record((cell_size * (cols + 1), cell_size))
+
+game_over_announce = GameOver(int(screen_width), int(screen_height), font)
 
 running = True
 while running:
     timer.tick(fps)
     screen.fill((0, 0, 0))
     game.draw(pygame, screen)
+    record.draw(game.ghosts, cell_size, font)
+
+    if pacman.paused:
+        game_over_announce.draw(screen)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -149,11 +168,5 @@ while running:
     pygame.display.flip()
  
 pygame.quit()
-
-# Bắt đầu trò chơi (khởi động các luồng ghost)
-
-#while running and game.is_running():
-    # for event in pygame.event.get():
-    #     
 
 game.stop()

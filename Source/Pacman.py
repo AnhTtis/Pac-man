@@ -1,4 +1,3 @@
-from maze import Maze
 import threading
 from enum import Enum
 
@@ -20,12 +19,17 @@ class Pacman:
         self.lock = threading.Lock()
         self.appearance = None
         self.direction = PacmanState.CLOSE
-        
+        self.paused = False
+            
+    def is_paused(self):
+        return self.paused
         
     def set_direction(self, direction: PacmanState):
         self.direction = direction
 
-    def move(self):
+    def move(self): 
+        if (self.paused):
+            return   
         if self.direction == PacmanState.UP and not self.maze.is_wall((self.pos[0], self.pos[1] - 1)):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0], self.pos[1] - 1)
@@ -46,11 +50,11 @@ class Pacman:
     
     def load_image(self, pygame):
         self.appearance = [
-            pygame.transform.scale(pygame.image.load("pacman/pacman_close_mouth.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_top.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_bot.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_left.png"), (self.width, self.height)), 
-            pygame.transform.scale(pygame.image.load("pacman/pacman_open_mouth_right.png"), (self.width, self.height))
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_close_mouth.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_top.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_bot.png"), (self.width, self.height)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_left.png"), (self.width, self.height)), 
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_right.png"), (self.width, self.height))
         ]
         
     def display(self, screen, cell_size):

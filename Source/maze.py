@@ -7,13 +7,13 @@ class Maze:
     def get_neigh(self, pos):
         x, y = pos
         neiboors = []
-        if x > 0 and self.__grid[y][x - 1] != '#':
+        if x > 0 and self.__grid[y][x - 1] != '#' and self.__grid[y][x - 1] != '!':
             neiboors.append((x - 1, y))
-        if x < self.__cols - 1 and self.__grid[y][x + 1] != '#':
+        if x < self.__cols - 1 and self.__grid[y][x + 1] != '#' and self.__grid[y][x + 1] != '!':
             neiboors.append((x + 1, y))
-        if y > 0 and self.__grid[y - 1][x] != '#':
+        if y > 0 and self.__grid[y - 1][x] != '#' and self.__grid[y - 1][x] != '!':
             neiboors.append((x, y - 1))
-        if y < self.__rows - 1 and self.__grid[y + 1][x] != '#':
+        if y < self.__rows - 1 and self.__grid[y + 1][x] != '#' and self.__grid[y + 1][x] != '!':
             neiboors.append((x, y + 1))
         return neiboors
     
@@ -33,6 +33,10 @@ class Maze:
         x, y = pos
         return self.__grid[y][x] == '#'
     
+    def is_not_go(self, pos):
+        x, y = pos
+        return self.__grid[y][x] == '!'
+    
     def is_dot(self, pos):
         x, y = pos
         return self.__grid[y][x] == '.'
@@ -48,3 +52,7 @@ class Maze:
     def is_pacman(self, pos):
         x, y = pos
         return self.__grid[y][x] == 'P'
+    def set_element(self, pos, element):
+        x, y = pos
+        self.__grid[y][x] = element
+        
