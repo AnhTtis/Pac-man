@@ -61,6 +61,7 @@ class Ghost:
         self.searched_time = 0.0
         self.searched_memory = 0.0
         # self.paused = False
+        self.logger = ExperimentLogger()
     
     def show_search_statistics(self):
         """
