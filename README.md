@@ -36,7 +36,8 @@ If requirements.txt is not available, manually install them independently.
 - Step 1: Download 23127075_23127130_23127203_23127423.zip or from the link in the report.pdf and unzip it.
 - Step 2: Download VS Code and Python with its necessary libraries.
 - Step 3: Open the main folder / repository.
-- Step 4: Navigate to the source folder and choose main.py.
+- Step 4: Navigate to the Source folder and choose main.py.
 - Step 5: Press the Run button in VS Code.
+- When you are in the main folder (Pac-man), to run the program, you can also use this command: python Source/main.py
 
 **Notice** You can see the video tutorial in report on how to play
