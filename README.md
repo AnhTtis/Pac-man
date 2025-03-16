@@ -18,8 +18,6 @@ This project, part of CS14003: Introduction to Artificial Intelligence, focuses 
 **Required Libraries:**
 
 - `pygame`: Handles game visualization and interaction.
-- `numpy`: Efficiently manages matrix-based operations for game state representation.
-- `matplotlib`: Visualizes algorithm performance through graphs and tables.
 - `heapq`: Supports priority queue operations for UCS and A* search.
 
 ## Installation
@@ -34,23 +32,11 @@ The `requirements.txt` file includes the following dependencies:
 
 If requirements.txt is not available, manually install them independently.
 
-## Implementation Details
-Each ghost is controlled by a unique search algorithm:
+## Complication:
+- Step 1: Download 23127075_23127130_23127203_23127423.zip or from the link in the report.pdf and unzip it.
+- Step 2: Download VS Code and Python with its necessary libraries.
+- Step 3: Open the main folder / repository.
+- Step 4: Navigate to the source folder and choose main.py.
+- Step 5: Press the Run button in VS Code.
 
-- Blue Ghost (BFS - Breadth-First Search): Explores nodes level by level, ensuring an optimal path but with high memory usage.
-- Pink Ghost (DFS - Depth-First Search): Explores depth-first, which may be faster but can lead to suboptimal paths.
-- Orange Ghost (UCS - Uniform-Cost Search): Expands the lowest-cost node first, making it useful for weighted paths but computationally expensive.
-- Red Ghost (A - A-Star Search):* Uses heuristics (Manhattan Distance) to optimize search efficiency.
-## Key Functionalities
-# State Representation:
-The Pac-Man environment is structured as a graph, where nodes represent positions in the maze.
-# Ghost Behavior:
-Each ghost follows its search strategy, navigating within maze constraints.
-# Real-time Execution:
-Ghosts continuously update paths based on Pac-Man’s movement for dynamic interactions.
-## Performance Metrics
-Each algorithm is assessed based on:
-- Search Time: Measures execution speed.
-- Memory Usage: Tracks memory consumption during execution.
-- Expanded Nodes: Counts nodes visited before finding Pac-Man.
-A comparative analysis is performed in different maze setups, with results illustrated through visualizations highlighting efficiency and trade-offs. 
+**Notice** You can see the video tutorial in report on how to play
