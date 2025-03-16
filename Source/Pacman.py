@@ -49,16 +49,16 @@ class Pacman:
     
     def load_image(self, pygame):
         self.appearance = [
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_close_mouth.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_top.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_bot.png"), (self.width, self.height)),
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_left.png"), (self.width, self.height)), 
-            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_right.png"), (self.width, self.height))
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_close_mouth.png"), (self.width - 4, self.height - 4)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_up.png"), (self.width - 4, self.height - 4)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_down.png"), (self.width - 4, self.height - 4)),
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_left.png"), (self.width - 4, self.height - 4)), 
+            pygame.transform.scale(pygame.image.load("Source/pacman/pacman_open_mouth_right.png"), (self.width - 4, self.height - 4))
         ]
         
     def display(self, screen, cell_size):
         x, y = self.pos
-        screen.blit(self.appearance[self.direction.value], (x * cell_size, y * cell_size))
+        screen.blit(self.appearance[self.direction.value], (x * cell_size + 2, y * cell_size + 2))
     
     def __str__(self):
         return f"Pacman: x={self.x}, y={self.y}, score={self.score}"
