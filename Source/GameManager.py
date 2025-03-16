@@ -59,10 +59,6 @@ class GameManager:
         for ghost in self.ghosts:
             ghost.set_pos(self.positions[ghost.name])
             ghost.display(screen)
-            # if ghost.paused:
-            #     for ghost in self.ghosts:
-            #         ghost.paused = True
-            #     self.pacman.paused = True
             
         # draw pac-man
         self.pacman.display(screen, self.cell_size)        

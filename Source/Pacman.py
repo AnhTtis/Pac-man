@@ -15,11 +15,9 @@ class Pacman:
         self.pos = pos #tuple of (x, y)
         self.score = 0 #score of pacman
         self.maze = maze #maze class
-        #avoid many ghost threads to access the same time
         self.lock = threading.Lock()
         self.appearance = None
         self.direction = PacmanState.CLOSE
-        # self.paused = False
         
     def set_direction(self, direction: PacmanState):
         self.direction = direction

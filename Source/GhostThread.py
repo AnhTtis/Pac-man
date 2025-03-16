@@ -46,9 +46,6 @@ class GhostThread(threading.Thread):
                         self.positions[self.ghost.name] = self.ghost.pos
                         #print(f"{self.ghost.name} moved to {self.ghost.pos}")
                         if self.ghost.pos == self.pacman.pos:
-                            print(f"{self.ghost.name} caught Pac-Man at {self.ghost.pos}!")
-                            # self.ghost.paused = True
-                            self.pacman.paused = True
                             if self.on_catch:
                                 self.on_catch(self.ghost.name, self.ghost.pos)
                             self.running.clear()
