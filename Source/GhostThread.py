@@ -4,6 +4,7 @@ from typing import Dict, Tuple, Optional, Callable
 
 from Ghost import Ghost
 from Pacman import Pacman
+from maze import Maze
 
 class GhostThread(threading.Thread):
     def __init__(self, ghost: Ghost, pacman: 'Pacman', lock: threading.Lock, 
@@ -27,9 +28,10 @@ class GhostThread(threading.Thread):
         #print ghost's statics
         while self.running.is_set():
             with self.lock:
+                grid = self.ghost.maze.get_grid(self.last_pos[1], self.last_pos[0])
                 self.ghost.maze.set_element(self.last_pos, '!')
                 self.ghost.find_path(self.pacman.pos)
-                self.ghost.maze.set_element(self.last_pos, '.') 
+                self.ghost.maze.set_element(self.last_pos, grid) # restore the last position
             time.sleep(0.1)
 
     def run(self) -> None:

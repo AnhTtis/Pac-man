@@ -17,6 +17,13 @@ class Maze:
             neiboors.append((x, y + 1))
         return neiboors
     
+    def is_no_dot(self):
+        for row in self.__grid:
+            for cell in row:
+                if cell == '.':
+                    return False
+        return True
+    
     def get_rows(self):
         return self.__rows
     

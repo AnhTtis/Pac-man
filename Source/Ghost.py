@@ -449,10 +449,6 @@ class RedGhost(Ghost):
         """
         if self.maze.is_wall(next_pos):
             return float('inf')  # Impassable
-        elif self.maze.is_big_dot(next_pos):
-            return 0.5  # Lower cost for big dots
-        elif self.maze.is_gate(next_pos):
-            return 2  # Higher cost for gates
         elif self.maze.is_dot(next_pos):
             return 1  # Regular cost for dots
         else:

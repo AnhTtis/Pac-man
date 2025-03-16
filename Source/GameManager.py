@@ -70,6 +70,9 @@ class GameManager:
             t.join()
 
     def is_running(self) -> bool:
+        if self.maze.is_no_dot() == True:
+            self.running.clear()
+            return False
         return self.running.is_set()
 
     def get_pacman_pos(self) -> Tuple[int, int]:

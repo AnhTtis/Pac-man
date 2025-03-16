@@ -28,15 +28,19 @@ class Pacman:
         if self.direction == PacmanState.UP and not self.maze.is_wall((self.pos[0], self.pos[1] - 1)):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0], self.pos[1] - 1)
+            self.maze.set_grid(self.pos[1], self.pos[0], 0)
         elif self.direction == PacmanState.DOWN and not self.maze.is_wall((self.pos[0], self.pos[1] + 1)):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0], self.pos[1] + 1)
+            self.maze.set_grid(self.pos[1], self.pos[0], 0)
         elif self.direction == PacmanState.LEFT and not self.maze.is_wall((self.pos[0] - 1, self.pos[1])):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0] - 1, self.pos[1])
+            self.maze.set_grid(self.pos[1], self.pos[0], 0)
         elif self.direction == PacmanState.RIGHT and not self.maze.is_wall((self.pos[0] + 1, self.pos[1])):
             self.maze.set_grid(self.pos[1], self.pos[0], 0)
             self.pos = (self.pos[0] + 1, self.pos[1])
+            self.maze.set_grid(self.pos[1], self.pos[0], 0)
         if self.maze.is_dot(self.pos):
             self.score += 1
         elif self.maze.is_big_dot(self.pos):
