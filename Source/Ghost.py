@@ -185,6 +185,15 @@ class PinkGhost(Ghost):
                 self.first_move = True
             else:
                 self.path = self.dfs(pacman_pos) or []
+        self.logger.log(
+            ghost_name=self.name,
+            algorithm="DFS",
+            search_time=self.searched_time,
+            expanded_nodes=self.searched_nodes,
+            memory_usage=self.searched_memory,
+            ghost_pos=self.pos,
+            pacman_pos=pacman_pos
+        )
         return None
     
     def load_image(self, pygame):
@@ -243,6 +252,15 @@ class OrangeGhost(Ghost):
                 self.first_move = True
             else:
                 self.path = self.ucs(pacman_pos) or []
+        self.logger.log(
+            ghost_name=self.name,
+            algorithm="UCS",
+            search_time=self.searched_time,
+            expanded_nodes=self.searched_nodes,
+            memory_usage=self.searched_memory,
+            ghost_pos=self.pos,
+            pacman_pos=pacman_pos
+        )
         return None
     
     def load_image(self, pygame):
@@ -334,6 +352,15 @@ class RedGhost(Ghost):
                 self.first_move = True
             else:
                 self.path = self.a_star(pacman_pos) or []
+        self.logger.log(
+            ghost_name=self.name,
+            algorithm="A*",
+            search_time=self.searched_time,
+            expanded_nodes=self.searched_nodes,
+            memory_usage=self.searched_memory,
+            ghost_pos=self.pos,
+            pacman_pos=pacman_pos
+        )
         return None
 
     def load_image(self, pygame):
